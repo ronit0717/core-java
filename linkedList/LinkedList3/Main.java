@@ -10,6 +10,7 @@ public class Main{
         list.insertNode(7);
         list.insertNode(8);
         list.insertNode(7, 9);
+        list.insertFirst(10);
 
         list.printList();
     }

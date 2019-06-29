@@ -20,6 +20,10 @@ public class LinkedList {
         return len;
     }
 
+    public void insertFirst(int val){
+        insertNode(0, val);
+    }
+
     //Code to inser Node at nth Position
     public void insertNode(int pos, int val){
         Node node = new Node(val);
@@ -71,17 +75,25 @@ public class LinkedList {
 
     public void printList(){
         Node currentNode = this.head;
+        System.out.println("\n*******************");
         System.out.println("Printing LinkedList");
+        System.out.println("-------------------");
 
         if(currentNode == null){
             System.out.println("LinkedList is Empty");
         }else{
+            boolean isHead = true;
             while(currentNode != null){
-                System.out.println(currentNode.value);
+                if(isHead){
+                    System.out.print(currentNode.value);
+                    isHead = false;
+                }else{
+                    System.out.print(" -> "+currentNode.value);
+                }
                 currentNode = currentNode.next;
             }
         }
-        System.out.println("-----------------");
+        System.out.println("\n*******************");
     }
 
 }
