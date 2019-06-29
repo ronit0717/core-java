@@ -9,6 +9,52 @@ public class LinkedList {
         this.head = node;
     }
 
+    public int getListLength(){
+        int len = 0;
+        Node currentNode = head;
+        while(currentNode != null){
+            len++;
+            currentNode = currentNode.next;
+        }
+
+        return len;
+    }
+
+    //Code to inser Node at nth Position
+    public void insertNode(int pos, int val){
+        Node node = new Node(val);
+
+        if(pos < 0 || pos>= getListLength()){
+            System.out.println("Error --> position out of index");
+            return;
+        }
+
+        if(pos == 0){
+            //head node case
+            if(head == null){
+                head = node;
+            }else{
+                node.next = head;
+                head = node;
+            }
+        }else{
+            int counter = 1;
+
+            Node currentNode = head;
+            while(counter < pos){
+                counter++;
+                currentNode = currentNode.next;
+            } 
+
+            node.next = currentNode.next;
+            currentNode.next = node;
+
+        }
+
+
+    }
+
+    //Code to insert Node at the end
     public void insertNode(int val){
         Node node = new Node(val);
         if(head == null){
