@@ -13,6 +13,38 @@ public class Main{
         list.insertFirst(10);
 
         list.printList();
+
+        list.removeNode();
+        list.removeNode(4);
+
+        list.printList();
+
+        list.removeNode(-1);
+        list.removeNode(7);
+        list.removeNode(7);
+        list.removeNode(0);
+        list.printList();
+
+        if(list.containsNode(4)){
+            System.out.println("Yes List contains the node");
+        }else{
+            System.out.println("No List does not contain the node");
+        }
+
+        System.out.println("Length of the LinkedList-->"+list.getListLength());
+
+        list.removeHead();
+        list.printList();
+
+        int val = list.getNode(2);
+        System.out.println("Element is-->"+val);
+
+        val = list.getNode(6);
+        System.out.println("Element is-->"+val);
+
+        list.setNode(2, 10);
+        list.printList();
+
     }
 
 }
