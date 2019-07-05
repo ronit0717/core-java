@@ -1,6 +1,5 @@
 //Problem Statement: https://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/
 
-import java.io.*;
 import java.util.Scanner;
 
 public class SpiralPrint{
@@ -23,6 +22,8 @@ public class SpiralPrint{
         printArray(arr, n, m);
 
         spiralPrintMatrix(arr, n, m);
+
+        sc.close();
     }
 
     private static void spiralPrintMatrix(int[][] arr, int n, int m){
