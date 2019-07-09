@@ -77,4 +77,63 @@ public class Tree{
 
         System.out.println(sb);
     }
+
+    private StringBuilder sbForDFS;
+
+    public void printTree(String type){
+        this.sbForDFS = new StringBuilder("");
+        
+        if(this.head == null){
+            System.out.println("Tree is empty");
+            return;
+        }
+
+        StringBuilder sbForDFS = new StringBuilder();
+
+        if(type.equals("DFS-POSTORDER")){
+            printTreeDFS1(this.head);
+        }else if(type.equals("DFS-INORDER")){
+            printTreeDFS2(this.head);
+        }else if(type.equals("DFS-PREORDER")){
+            printTreeDFS3(this.head);
+        }
+
+        System.out.println(this.sbForDFS);
+    }
+
+    public void printTreeDFS1(Node node){
+        if(node.left != null){
+            printTreeDFS1(node.left);
+        }
+
+        if(node.right != null){
+            printTreeDFS1(node.right);
+        }
+
+        this.sbForDFS.append(node.value+" ");
+    }
+
+    public void printTreeDFS2(Node node){
+        if(node.left != null){
+            printTreeDFS2(node.left);
+        }
+
+        this.sbForDFS.append(node.value+" ");
+
+        if(node.right != null){
+            printTreeDFS2(node.right);
+        }
+    }
+
+    public void printTreeDFS3(Node node){
+        this.sbForDFS.append(node.value+" ");
+        
+        if(node.left != null){
+            printTreeDFS3(node.left);
+        }
+
+        if(node.right != null){
+            printTreeDFS3(node.right);
+        }
+    }
 }
