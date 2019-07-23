@@ -25,38 +25,6 @@ class CheckStringReversedTwoPlaces
 			}else{
 				System.out.println(0);
 			}
-			
-
-			/*
-			if(!done){
-				if(a.equals(b)){
-					System.out.println(1);
-					done = true;
-				}else{
-					for(int i=0; i < a.length(); i++){
-						for(int j=0; j < b.length(); j++){
-							if(subReverse(a, b, i, j)){
-								System.out.println(1);
-								done = true;
-								break;
-							}
-						}
-
-						if(done){
-							break;
-						}
-					}
-				}
-			}
-			
-			
-			if(!done){
-				System.out.println(0);
-			}
-
-			*/
-			
-			
 		}
 		
 		sc.close();
@@ -91,34 +59,4 @@ class CheckStringReversedTwoPlaces
 
 		return false;
 	 }
-
-
-
-
-	 /*
-	 
-	 private static boolean subReverse(String a, String b, int i, int j){
-		System.out.println("\n----------");
-		System.out.println("Iteration: i: "+i+" j: "+j);
-		StringBuilder sb = new StringBuilder(a.substring(i));
-		sb.reverse();
-
-		String stage1 = a.substring(0, i) + sb.toString();
-		System.out.println("Stage 1: "+stage1);
-
-		sb = new StringBuilder(stage1.substring(j));
-		sb.reverse();
-
-		String stage2 = stage1.substring(0, j) + sb.toString();
-		System.out.println("Stage 2: "+stage2);
-
-
-		if(stage2.equals(b)){
-			return true;
-		}
-		
-		return false;
-	 }
-	 
-	 */
 }
