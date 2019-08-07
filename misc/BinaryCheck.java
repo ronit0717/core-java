@@ -12,6 +12,8 @@ public class BinaryCheck{
         int rem = inp%10;
         int quo = inp/10;
 
+        sc.close();
+        
         if(!(rem==1 || rem==0) ){
             System.out.println("Not binary");
             return;
@@ -28,7 +30,5 @@ public class BinaryCheck{
         }
 
         System.out.println("Its binary");
-
-        sc.close();
     }
 }

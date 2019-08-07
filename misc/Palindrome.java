@@ -20,6 +20,8 @@ public class Palindrome {
             pointer2 = (len-1)/2 + 1;
         }
 
+        sc.close();
+
         while(pointer1 >= 0){
             if(inp.charAt(pointer1) != inp.charAt(pointer2)){
                 System.out.println("Not Palindrome");
@@ -31,6 +33,6 @@ public class Palindrome {
 
         System.out.println("Its a palindrome");
 
-        sc.close();
+
     }
 }
