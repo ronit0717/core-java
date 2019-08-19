@@ -13,8 +13,38 @@ public class LargestNumber {
                 output.add(A.get(i));
             }else{
                 int a = A.get(i);
-                boolean done = false;
+                //boolean done = false;
+
+                int start = 0;
+                int end = output.size() - 1;
+                int mid = -1;
+                int direction = 0;
+                while(start <= end){
+                    mid = (start+end)/2;
+                    int b = output.get(mid);
+
+                    int comp = significantCompare(a, b);
+                    if(comp == -1){
+                        //move right
+                        start = mid+1;
+                        direction = 1; 
+                    }else if(comp == 1){
+                        //move left
+                        end = mid-1;
+                        direction = -1;
+                    }else{
+                        direction = 0;
+                        break;
+                    }
+                }
+
+                if(direction == 1){
+                    output.add(mid+1, a);
+                }else{
+                    output.add(mid, a);    
+                }
                 
+                /*
                 for(int j=0; j<output.size(); j++){
                     int b = output.get(j);
                     int comp = significantCompare(a, b);
@@ -30,6 +60,9 @@ public class LargestNumber {
                 if(!done){
                     output.add(a);
                 }
+                */
+
+                
             }
         }
 
