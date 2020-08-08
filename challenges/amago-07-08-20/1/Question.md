@@ -12,7 +12,7 @@ For example, **N=6** and person 3 and 5 are infected. Here, person 2 gets infect
 
 The Mayor wants you to determine the number of unique sequences in which the other persons can get infected. Since the answer can be large, print it modulo *1000000007* **(10^9 + 7)** .
 
-**Note**: Two sequences are said to be dierent if there exists at least *one* position among sequences where a person present is dierent.
+**Note**: Two sequences are said to be different if there exists at least *one* position among sequences where a person present is different.
 
 **Input format**
 * The first line contains two space-separated integers **N** and **M**.
