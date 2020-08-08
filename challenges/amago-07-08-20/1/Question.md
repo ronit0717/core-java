@@ -26,10 +26,13 @@ Print a single integer denoting the number of unique sequences.
 1 <= M <= (N-1)
 
 *Sample Input*
+
 5 2
+
 1 5
 
 *Sample Output*
+
 4
 
 **Explanation**
