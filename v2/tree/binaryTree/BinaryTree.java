@@ -17,6 +17,7 @@ class BinaryTree {
 
         tree.inOrderIterative();
         tree.preOrderIterative();
+        tree.postOrderIterative();
     }
 
     void inOrderIterative() {
@@ -70,6 +71,33 @@ class BinaryTree {
             if (curr.left != null) {
                 nodeStack.push(curr.left);
             }
+        }
+    }
+
+    void postOrderIterative() {
+        print("\nPost order iterative");
+        Node prev = null;
+        Stack<Node> nodeStack = new Stack<>();
+        nodeStack.push(this.root);
+        while(!nodeStack.isEmpty()) {
+            Node curr = nodeStack.peek();
+            if ( (curr.left != null && curr.left != prev && 
+                    curr.right != null && curr.right != prev) 
+                || (curr.left == null && curr.right != null && curr.right != prev) 
+                || (curr.right == null && curr.left != null && curr.left != prev) 
+            ) {
+                //means not going back
+                if (curr.right != null) {
+                    nodeStack.push(curr.right);
+                }
+                if (curr.left != null) {
+                    nodeStack.push(curr.left);
+                }
+            } else {
+                print(curr.data);
+                nodeStack.pop();
+            }
+            prev = curr;
         }
     }
 
