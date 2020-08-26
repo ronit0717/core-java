@@ -10,12 +10,17 @@ class BinaryTree {
         tree.root = new Node(1);
         tree.root.left = new Node(2);
         tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
         tree.root.left.right = new Node(5);
-        tree.root.right.left = new Node(4);
+        tree.root.right.left = new Node(6);
+        tree.root.left.left.left = new Node(7);
+
         tree.inOrderIterative();
+        tree.preOrderIterative();
     }
 
     void inOrderIterative() {
+        print("\nIn order iterative");
         Stack<Node> nodeStack = new Stack<>();
         nodeStack.push(this.root);
         Node prev = null;
@@ -48,6 +53,23 @@ class BinaryTree {
                 }
             }
             prev = curr;
+        }
+    }
+
+    void preOrderIterative() {
+        print("\nPre order iterative");
+        Stack<Node> nodeStack = new Stack<>();
+        nodeStack.push(this.root);
+        Node prev = null;
+        while(!nodeStack.isEmpty()) {
+            Node curr = nodeStack.pop();
+            print(curr.data);
+            if (curr.right != null) {
+                nodeStack.push(curr.right);
+            }
+            if (curr.left != null) {
+                nodeStack.push(curr.left);
+            }
         }
     }
 
