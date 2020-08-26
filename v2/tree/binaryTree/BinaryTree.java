@@ -10,8 +10,8 @@ class BinaryTree {
         tree.root = new Node(1);
         tree.root.left = new Node(2);
         tree.root.right = new Node(3);
-        tree.root.left.left = new Node(4);
         tree.root.left.right = new Node(5);
+        tree.root.right.left = new Node(4);
         tree.inOrderIterative();
     }
 
@@ -19,7 +19,9 @@ class BinaryTree {
         Stack<Node> nodeStack = new Stack<>();
         nodeStack.push(this.root);
         Node prev = null;
-        while(!nodeStack.isEmpty()) {
+        int loopCount = 0;
+        while(!nodeStack.isEmpty() && !isFused(loopCount)) {
+            loopCount++;
             Node curr = nodeStack.peek();
             if (curr.left != null && curr.left == prev) {
                 print(curr.data);
@@ -35,10 +37,13 @@ class BinaryTree {
                     nodeStack.push(curr.left);
                 }
             } else {
-                print(curr.data);
-                if (curr.right != null) {
+                if (curr.right != null && curr.right == prev) {
+                    nodeStack.pop();
+                } else if (curr.right != null && curr.right != prev) {
+                    print(curr.data);
                     nodeStack.push(curr.right);
                 } else {
+                    print(curr.data);
                     nodeStack.pop();
                 }
             }
