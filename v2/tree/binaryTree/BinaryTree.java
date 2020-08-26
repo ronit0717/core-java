@@ -1,128 +1,73 @@
-import java.util.*;
+// non-recursive java program for inorder traversal 
+import java.util.Stack;
 
-public class BinaryTree {
-	
-	public static void main(String[] args) {
-		BinaryTreeNode tree = null;
-		//print("Hello Binary Tree");
-		//tree = makeMyTreeOne();
+class BinaryTree {
+    
+    Node root;
+    
+    public static void main(String args[]) {
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+        tree.inOrderIterative();
+    }
 
-		print("Hello Binary Tree 2");
-		tree = makeMyTreeTwo();
-		//tree.printAllTraversals();
-		tree.postOrderPrintIterative();
-	}
+    void inOrderIterative() {
+        Stack<Node> nodeStack = new Stack<>();
+        nodeStack.push(this.root);
+        Node prev = null;
+        while(!nodeStack.isEmpty()) {
+            Node curr = nodeStack.peek();
+            if (curr.left != null && curr.left == prev) {
+                print(curr.data);
+                if (curr.right != null) {
+                    nodeStack.push(curr.right);
+                } else {
+                    nodeStack.pop();
+                }
+            } else if (curr.left != null && curr.left != prev) {
+                if (curr.right != null && curr.right == prev) {
+                    nodeStack.pop();
+                } else {
+                    nodeStack.push(curr.left);
+                }
+            } else {
+                print(curr.data);
+                if (curr.right != null) {
+                    nodeStack.push(curr.right);
+                } else {
+                    nodeStack.pop();
+                }
+            }
+            prev = curr;
+        }
+    }
 
-	static class BinaryTreeNode {
-		private BinaryTreeNode left;
-		private BinaryTreeNode right;
-		private int val;
+    void print(Object obj) {
+        System.out.println(obj);
+    }
 
-		BinaryTreeNode(int val) {
-			this.val = val;
-		}
+    boolean isFused(int loopCount) {
+        if (loopCount > 20) {
+            print("FALL SAFE FUSE");
+            return true;
+        }
+        return false;
+    }
+}
 
-		void preOrderPrint() {
-			print(this.val);
-			if (this.left != null) {
-				this.left.preOrderPrint();
-			}
-			if (this.right != null) {
-				this.right.preOrderPrint();
-			}
-		}
+/*
+ * Class containing left and right child of current node and key value
+ */
+class Node {
+    int data;
+    Node left, right;
 
-		void postOrderPrintIterative() {
-			Stack<BinaryTreeNode> st = new Stack<BinaryTreeNode>();
-			BinaryTreeNode prev = null;
-			st.push(this);
-			while(!st.isEmpty()) {
-				BinaryTreeNode curr = st.peek();
-				boolean addInStack = true;
-				boolean hasChild = false;
-				if (prev != null && (curr.left == prev || curr.right == prev)) {
-					addInStack = false;
-				}
-				if (addInStack && curr.right != null) {
-					st.push(curr.right);
-					hasChild = true;
-				}
-				if (addInStack && curr.left != null) {
-					st.push(curr.left);
-					hasChild = true;
-				}
-				if (!hasChild) {
-					//leaf
-					print(curr.val);
-					st.pop();
-				}
-				prev = curr;
-			}
-		}
-
-		void inOrderPrint() {
-			if (this.left != null) {
-				this.left.inOrderPrint();
-			}
-			print(this.val);
-			if (this.right != null) {
-				this.right.inOrderPrint();
-			}
-		}
-
-		void postOrderPrint() {
-			if (this.left != null) {
-				this.left.postOrderPrint();
-			}
-			if (this.right != null) {
-				this.right.postOrderPrint();
-			}
-			print(this.val);
-		}
-
-		void setChild(BinaryTreeNode left, BinaryTreeNode right) {
-			this.left = left;
-			this.right = right;
-		}
-
-		void setChild(int left, int right) {
-			BinaryTreeNode leftChild = new BinaryTreeNode(left);
-			BinaryTreeNode rightChild = new BinaryTreeNode(right);
-			this.left = leftChild;
-			this.right = rightChild;
-		}
-
-		void printAllTraversals() {
-			print("In Order\n======");
-			this.inOrderPrint();
-
-			print("Pre Order\n======");
-			this.preOrderPrint();
-
-			print("Post Order\n======");
-			this.postOrderPrint();
-		}
-	}
-
-	static void print(Object obj) {
-		System.out.println(obj);
-	}
-
-
-	static BinaryTreeNode makeMyTreeOne() {
-		BinaryTreeNode parent = new BinaryTreeNode(1);
-		BinaryTreeNode child1 = new BinaryTreeNode(2);
-		BinaryTreeNode child2 = new BinaryTreeNode(3);
-		parent.setChild(child1, child2);
-		return parent;
-	}
-
-	static BinaryTreeNode makeMyTreeTwo() {
-		BinaryTreeNode root = new BinaryTreeNode(1);
-		root.setChild(2, 3);
-		root.left.setChild(4, 5);
-		root.right.setChild(6, 7);
-		return root;
-	}
-
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
 }
