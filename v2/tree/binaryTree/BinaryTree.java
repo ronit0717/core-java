@@ -1,29 +1,16 @@
+import java.util.*;
+
 public class BinaryTree {
 	
 	public static void main(String[] args) {
-		print("Hello Binary Tree");
-		BinaryTreeNode root = makeMyTreeOne();
-
-		print("In Order\n======");
-		root.inOrderPrint();
-
-		print("Pre Order\n======");
-		root.preOrderPrint();
-
-		print("Post Order\n======");
-		root.postOrderPrint();
+		BinaryTreeNode tree = null;
+		//print("Hello Binary Tree");
+		//tree = makeMyTreeOne();
 
 		print("Hello Binary Tree 2");
-		root = makeMyTreeTwo();
-
-		print("In Order\n======");
-		root.inOrderPrint();
-
-		print("Pre Order\n======");
-		root.preOrderPrint();
-
-		print("Post Order\n======");
-		root.postOrderPrint();
+		tree = makeMyTreeTwo();
+		//tree.printAllTraversals();
+		tree.postOrderPrintIterative();
 	}
 
 	static class BinaryTreeNode {
@@ -42,6 +29,34 @@ public class BinaryTree {
 			}
 			if (this.right != null) {
 				this.right.preOrderPrint();
+			}
+		}
+
+		void postOrderPrintIterative() {
+			Stack<BinaryTreeNode> st = new Stack<BinaryTreeNode>();
+			BinaryTreeNode prev = null;
+			st.push(this);
+			while(!st.isEmpty()) {
+				BinaryTreeNode curr = st.peek();
+				boolean addInStack = true;
+				boolean hasChild = false;
+				if (prev != null && (curr.left == prev || curr.right == prev)) {
+					addInStack = false;
+				}
+				if (addInStack && curr.right != null) {
+					st.push(curr.right);
+					hasChild = true;
+				}
+				if (addInStack && curr.left != null) {
+					st.push(curr.left);
+					hasChild = true;
+				}
+				if (!hasChild) {
+					//leaf
+					print(curr.val);
+					st.pop();
+				}
+				prev = curr;
 			}
 		}
 
@@ -76,6 +91,17 @@ public class BinaryTree {
 			this.left = leftChild;
 			this.right = rightChild;
 		}
+
+		void printAllTraversals() {
+			print("In Order\n======");
+			this.inOrderPrint();
+
+			print("Pre Order\n======");
+			this.preOrderPrint();
+
+			print("Post Order\n======");
+			this.postOrderPrint();
+		}
 	}
 
 	static void print(Object obj) {
@@ -98,7 +124,5 @@ public class BinaryTree {
 		root.right.setChild(6, 7);
 		return root;
 	}
-
-
 
 }
