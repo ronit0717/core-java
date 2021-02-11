@@ -3,21 +3,18 @@ class Solution {
     	HashMap<Character, Integer> mySet = new HashMap<Character, Integer>();
     	int result = 0;
     	int lenCount = 0;
-    	int i = 0;
-        while(i < s.length()) {
+    	int newStartIndex = 0;
+        for (int i=0; i < s.length(); i++) {
         	char myChar = s.charAt(i);
-        	if (mySet.containsKey(myChar)) {
+        	if (mySet.containsKey(myChar) && mySet.get(myChar) >= newStartIndex) {
+        		newStartIndex = mySet.get(myChar) + 1;
         		if (lenCount > result) {
         			result = lenCount;
         		}
-        		lenCount = 0;
-        		i = mySet.get(myChar) + 1;
-        		myChar = s.charAt(i);
-        		mySet.clear();
+        		lenCount = i - mySet.get(myChar) - 1;
         	}
         	lenCount++;
         	mySet.put(myChar, i);
-        	i++;
         }
         if (lenCount > result) {
         	result = lenCount;
@@ -25,3 +22,5 @@ class Solution {
         return result;
     }
 }
+
+//abba
