@@ -1,5 +1,7 @@
 // non-recursive java program for inorder traversal 
 import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 class BinaryTree {
     
@@ -18,6 +20,36 @@ class BinaryTree {
         tree.inOrderIterative();
         tree.preOrderIterative();
         tree.postOrderIterative();
+        tree.levelOrder();
+    }
+
+    void levelOrder() {
+        print("\nPrint level order");
+        Queue<Node> qNode = new LinkedList<>();
+        qNode.add(this.root);
+        qNode.add(null);
+        int loopCount = 0;
+        Node prev = null;
+        while(!qNode.isEmpty() && !isFused(loopCount)) {
+            loopCount++;
+            Node curr = qNode.poll();
+            if (curr == null){
+                if(prev == null) {
+                    break;
+                }
+                System.out.print("\n");
+                qNode.add(null);
+            } else {
+                System.out.print(curr.data+" ");
+            }
+            if (curr!= null && curr.left != null) {
+                qNode.add(curr.left);
+            }
+            if (curr!=null && curr.right != null) {
+                qNode.add(curr.right);
+            }
+            prev = curr;
+        }
     }
 
     void inOrderIterative() {
