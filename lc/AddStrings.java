@@ -8,11 +8,11 @@ class Solution {
  			int p = 0;
  			int q = 0;
  			if (i != -1) {
- 				p = Character.getNumericValue(num1.charAt(i));
+ 				p = num1.charAt(i) - '0';
  				i--;
  			}
  			if (j != -1) {
- 				q = Character.getNumericValue(num2.charAt(j));
+ 				q = num2.charAt(j) - '0';
  				j--;
  			}
  			int sum = p + q + carry;
@@ -22,8 +22,8 @@ class Solution {
  			} else {
  				carry = 0;
  			}
- 			sb.insert(0, sum);
+ 			sb.append(sum);
  		}
- 		return sb.toString();
+ 		return sb.reverse().toString();
     }
 }
