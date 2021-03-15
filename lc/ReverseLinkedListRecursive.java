@@ -10,12 +10,16 @@
  */
 class Solution {
     public ListNode reverseList(ListNode head) {
-        ListNode result = new ListNode();
+        ResultObject result = new ResultObject();
         reverse(head, result);
-        return result.next;
+        return result.result;
     }
     
-    ListNode reverse(ListNode curr, ListNode result) {
+    class ResultObject {
+        ListNode result;
+    }
+    
+    ListNode reverse(ListNode curr, ResultObject result) {
         if (curr == null) {
             return curr;
         }
@@ -24,10 +28,10 @@ class Solution {
             next.next = curr;
         } else {
             //result = curr;
-            result.next = curr;
+            result.result = curr;
             
         }
         curr.next = null;
         return curr;
-    }   
+    }
 }
