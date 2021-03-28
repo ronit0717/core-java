@@ -5,7 +5,7 @@ public class PrintStars{
      }
      
      public static void printStar(int lineCount) {
-         if (lineCount <= 1) {
+         if (lineCount < 1) {
              return;
          }
          int n = 2 * lineCount - 1;
