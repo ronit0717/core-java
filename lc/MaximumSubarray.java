@@ -1,36 +1,40 @@
 class Solution {
     public int maxSubArray(int[] nums) {
-        int[] maxSum = { Integer.MIN_VALUE };
-        HashMap<String, Integer> mem = new HashMap<>();
-        getSum(nums, 0, (nums.length -1), mem, maxSum);
-        return maxSum[0];
-    }
-
-    private int totalSum(int[] nums) {
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-        }
-        return sum;
-    }
-
-    private int getSum(int[] nums, int startIndex, int endIndex, HashMap<String, Integer> mem, int[] maxSum int totalSum) {
-        String key = new StringBuilder().append(startIndex).append(endIndex).toString();
-        int sum = 0;
-        if (mem.containsKey(key)) {
-            return mem.get(key);
-        } else if (startIndex == endIndex) {
-            sum = nums[startIndex];
-        } else {
-            for (int i = startIndex; i < endIndex; i++) {
-                sum = getSum(nums, startIndex, i, mem, maxSum)
-                      + getSum(nums, (i + 1), endIndex, mem, maxSum);
+        int dp[] = new int[nums.length];
+        dp[0] = nums[0];
+        int maxSum = dp[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i] = nums[i] + ((dp[i - 1] > 0) ? dp[i - 1] : 0);
+            if (dp[i] > maxSum) {
+                maxSum = dp[i];
             }
         }
-        if (sum > maxSum[0]) {
-            maxSum[0] = sum;
-        }
-        mem.put(key, sum);
-        return sum;
+        return maxSum;
     }
 }
+
+/*
+ex1:
+nums[] = { 2, -1, 2, 0 }
+db[]   = { 2,  1, 3, 3 } => Ans: 3 (max of db[])
+
+ex2:
+nums[] = { 2, -1, -1, -1, 3, -1}
+db[]   = { 2,  1,  0, -1, 3,  2} => Ans: 3 (max of db[])
+
+ex3:
+nums[] = { 3, -1, -1, -1, 3, -1}
+db[]   = { 3,  2,  1,  0, 3,  2} => Ans: 3 (max of db[])
+
+ex3:
+nums[] = { 3, -1, -1, -1, 3, -1}
+db[]   = { 3,  2,  1,  0, 3,  2} => Ans: 3 (max of db[])
+
+ex4:
+nums[] = { 4, -1, -1, -1, 3, -1}
+db[]   = { 4,  3,  2,  1, 4,  3} => Ans: 4 (max of db[])
+
+ex4:
+nums[] = { 4, -1, -1, -1, 5, -1, 2}
+db[]   = { 4,  3,  2,  1, 6,  5, 7} => Ans: 7 (max of db[])
+*/
