@@ -17,20 +17,24 @@ class Solution {
     }
     
     private void letterComb(String digits, 
-    						int index, 
-    						String candidate, 
-    						List<String> result, 
-    						HashMap<Character, String> map) {
+                            int index, 
+                            String candidate, 
+                            List<String> result, 
+                            HashMap<Character, String> map) {
         if (digits.equals("")) {
             return;
         }
-    	if (index >= digits.length()) {
-    		result.add(candidate);
+        if (index >= digits.length()) {
+            result.add(candidate);
             return;
-    	}
-    	String letters = map.get(digits.charAt(index));
-    	for (int i = 0; i < letters.length(); i++) {
-    		letterComb(digits, index + 1, new String(candidate + letters.charAt(i)), result, map);
-    	}
+        }
+        String letters = map.get(digits.charAt(index));
+        for (int i = 0; i < letters.length(); i++) {
+            letterComb(digits, 
+                       index + 1, 
+                       new StringBuilder(candidate).append(letters.charAt(i)).toString(), 
+                       result, 
+                       map);
+        }
     }
 }
