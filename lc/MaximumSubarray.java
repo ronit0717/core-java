@@ -13,7 +13,7 @@ class Solution {
     }
 }
 
-/*
+/* KADANE's ALGORITMS 
 ex1:
 nums[] = { 2, -1, 2, 0 }
 db[]   = { 2,  1, 3, 3 } => Ans: 3 (max of db[])
