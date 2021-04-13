@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CanConstructDP {
+public class CountConstructDP {
 
      public static void main(String []args){
         String target =
@@ -17,28 +17,25 @@ public class CanConstructDP {
         //{"bo", "rd", "ate", "t", "ska", "sk", "boar"}
         {"a", "p", "ent", "enter", "ot", "o", "t"}
         ;
-        HashMap<String, Boolean> mem = new HashMap<>();
-        boolean status = canConstruct(target, cand, mem);
-        System.out.println(status);
+        HashMap<String, Integer> mem = new HashMap<>();
+        int count = countConstruct(target, cand, mem);
+        System.out.println(count);
      }
      
-     private static boolean canConstruct(String target, String[] cand, HashMap<String, Boolean> mem) {
+     private static int countConstruct(String target, String[] cand, HashMap<String, Integer> mem) {
          if ("".equals(target)) {
-             return true;
+             return 1;
          }
          if (mem.containsKey(target)) {
              return mem.get(target);
          }
+         int count = 0;
          for (int i = 0; i < cand.length; i++) {
              if (target.indexOf(cand[i]) == 0) {
-                 boolean status = canConstruct(target.substring(cand[i].length()), cand, mem);
-                 if (status) {
-                     mem.put(target, status);
-                     return status;
-                 }
+                 count += countConstruct(target.substring(cand[i].length()), cand, mem);
              }
          }
-         mem.put(target, false);
-         return false;
+         mem.put(target, count);
+         return count;
      }
 }
