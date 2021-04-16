@@ -20,7 +20,7 @@ class Solution {
     }
 }
 
-/* To determine max of function | A[i] - A[j] | - | i - j |
+/* To determine max of function | A[i] - A[j] | + | i - j |
 
         A= [1,  3,  -1]
         i= [1,  2,   3]
