@@ -13,6 +13,23 @@ class Solution {
     }
 }
 
+
+//alternate solution
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public int maxSubArray(final List<Integer> A) {
+        int maxSum = A.get(0);
+        int currSum = maxSum;
+        for (int i = 1; i < A.size(); i++) {
+            currSum = A.get(i) + ((currSum > 0) ? currSum : 0);
+            if (currSum > maxSum) {
+                maxSum = currSum;
+            }
+        }
+        return maxSum;
+    }
+}
+
 /* KADANE's ALGORITMS 
 ex1:
 nums[] = { 2, -1, 2, 0 }
