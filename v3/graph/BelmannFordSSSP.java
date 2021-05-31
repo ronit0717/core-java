@@ -15,38 +15,42 @@ public class HelloWorld{
         Arrays.fill(dist, Integer.MAX_VALUE);
         
         dist[0] = 0;
-        
+       
+        //First Pass
         for (int i = 0; i < v; i++) {
+            if (dist[i] == Integer.MAX_VALUE) { //if curr dist is +infinity, ignore as adjacent dist wont be improved
+                continue;
+            }
             for (Integer[] n : adj.get(i)) {
-                int newDist = dist[i] + n[1];
-                if (newDist < dist[n[0]]) {
-                    dist[n[0]] = newDist;
+                if (dist[i] == Integer.MIN_VALUE) { //if curr dist is -infinity, all adjacent will be -infinity
+                    dist[n[0]] = Integer.MIN_VALUE;
+                } else if (dist[n[0]] > (dist[i] + n[1])) { //if distance improving, update
+                    dist[n[0]] = (dist[i] + n[1]);
                 }
             }
         }
         
-        for (int c = 1; c < v; c++) { // v-1 iteration
+        //v-1 iterations
+        int count = 1;
+        while (count < v) {
+            count++;
+            
             for (int i = 0; i < v; i++) {
-                if (dist[i] == Integer.MIN_VALUE) {
-                    for (Integer[] n : adj.get(i)) {
+                if (dist[i] == Integer.MAX_VALUE) { //if curr dist is +infinity, ignore as adjacent dist wont be improved
+                    continue;
+                }
+                for (Integer[] n : adj.get(i)) {
+                    if (dist[i] == Integer.MIN_VALUE) { //if curr dist is -infinity, all adjacent will be -infinity
+                        dist[n[0]] = Integer.MIN_VALUE;
+                    } else if (dist[n[0]] > (dist[i] + n[1])) { //if distance still improving, update to -infinity. This is negative loop
                         dist[n[0]] = Integer.MIN_VALUE;
                     }
-                } else {
-                    for (Integer[] n : adj.get(i)) {
-                        if (dist[n[0]] == Integer.MIN_VALUE) {
-                            continue;
-                        }
-                        int newDist = dist[i] + n[1];
-                        if (newDist < dist[n[0]]) {
-                            dist[n[0]] = Integer.MIN_VALUE;
-                        }
-                    }   
                 }
-            }      
+            }
         }
-        
+       
         print(new Integer[]{0, 1, 2, 3, 4, 5, 6, 7 ,8});
-        print(dist);
+        print(dist); // 0   1   -inf    -inf    -inf    5   5   8   +inf
      }
      
      private static void print(Integer[] a) {
