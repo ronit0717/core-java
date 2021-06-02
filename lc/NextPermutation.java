@@ -19,7 +19,7 @@ Number = 3421
 Step 1: Here i will be pointing to 3
 Step 2: j will be pointing to 4
 Step 3: Swap 3 and 4, thus it becomes 4 321
-Step 4: Reverse '321' , hence it becomes 4123
+Step 4: Reverse elements in the right of i => '321' , hence it becomes 4123
 
 Intuition: My target is to find the next greater number that can be formed with the given 
 numers 1,2,3 and 4
