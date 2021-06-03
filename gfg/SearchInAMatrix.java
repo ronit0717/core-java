@@ -1,4 +1,10 @@
 //Solution 2: TC = O(N + M), SC = O(1)
+/*
+Start at top right, if curr == X => we found it
+                    else if curr < X => then move left 
+                    else  => move down
+
+*/
 class Sol
 {
     public static int matSearch(int mat[][], int N, int M, int X)
