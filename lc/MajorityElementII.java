@@ -1,4 +1,4 @@
-//Solution 1: Voore's majority element algorithm TC = O(N), SC = O(1)
+//Solution 1: Moore's majority element algorithm TC = O(N), SC = O(1)
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
         int element1 = -1;
