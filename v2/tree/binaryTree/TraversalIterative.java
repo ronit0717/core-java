@@ -92,7 +92,11 @@ public ArrayList<Integer> postorderTraversal(TreeNode A) {
     TreeNode prev = null;
     while (!st.isEmpty()) {
         TreeNode curr = st.peek();
-        if ( ( curr.left == prev || curr.left == null) && curr.right != null && prev != curr.right ) {
+        if ( curr.right == null || curr.right == prev  ) {
+            //print root
+            res.add(curr.val);
+            prev = st.pop();
+        } else {
             //go right
             curr = curr.right;
             st.push(curr);
@@ -101,10 +105,6 @@ public ArrayList<Integer> postorderTraversal(TreeNode A) {
                 st.push(curr);
                 prev = curr;
             }
-        } else { //condition (curr.right == prev || curr.right == null) {
-            //print root
-            res.add(curr.val);
-            prev = st.pop();
         }
     }
     return res;
