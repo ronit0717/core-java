@@ -17,7 +17,7 @@ class Solution {
             int count = 1;
             if (!set.contains(i - 1)) {
                 int next = i + 1;
-                while (set.contains(next)) {
+                while (set.contains(next)) { //overall at max this will be iterated n times across all iterations
                     count++;
                     next++;
                 }
