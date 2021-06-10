@@ -1,4 +1,4 @@
-//Cleaner solution TC = O(N)
+//Cleaner solution TC = O(N), SC = O(N)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
         if (s == null || s.length() == 0) {
@@ -22,6 +22,7 @@ class Solution {
     }
 }
 
+//TC = O(N), SC = O(N)
 class Solution {
     public int lengthOfLongestSubstring(String s) {
     	HashMap<Character, Integer> mySet = new HashMap<Character, Integer>();
@@ -46,5 +47,3 @@ class Solution {
         return result;
     }
 }
-
-//abba
