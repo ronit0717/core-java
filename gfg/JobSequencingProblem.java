@@ -1,6 +1,7 @@
 //Link: https://www.geeksforgeeks.org/job-sequencing-problem/
 
 /* Solution 2: TC = O(NLogN * x), where x is max deadline
+SC = O(x), where x is max deadline
 Sort the array in descending order of profit
 Then iterate the array, and try to do the task on last day of deadline.
 If on that day already a task is assigned, move to previous day
