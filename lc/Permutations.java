@@ -1,5 +1,5 @@
 /*
-Solution 2: Using Swap method, swap and unswap!!
+Solution 3: Using Swap method, swap and unswap!!
 TC = O(n!) * O(n) for array clone = O(n * n!)
 SC = O(1)
 */
@@ -40,10 +40,48 @@ class Solution {
 }
 
 /*
+Solution 2: using visited array approach
+mark an element as reset.. when operation completed reset
+
+TC = O(n!)
+SC = O(n) for visited array + O(n) for cand array => O(n)
+*/
+
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        boolean[] visited = new boolean[nums.length];
+        List<List<Integer>> res = new LinkedList<>();
+        int[] cand = new int[nums.length];
+        permuteUtil(nums, visited, cand, 0, res);
+        return res;
+    }
+    
+    private void permuteUtil(int[] nums, boolean[] visited, int[] cand, int index, List<List<Integer>> res) {
+        if (index == nums.length) {
+            List<Integer> candList = new LinkedList<>();
+            for (int i = 0; i < index; i++) {
+                candList.add(cand[i]);
+            }
+            res.add(candList);
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i]) {
+                continue;
+            }
+            visited[i] = true;
+            cand[index] = nums[i];
+            
+            permuteUtil(nums, visited, cand, index + 1, res);
+            
+            visited[i] = false; //reset
+        }
+    } 
+}
+
+/*
 Solution 1: Using recursion, TC = O(n!) * O(n) For removal = O(n * n!)
 Approach: First fill the first position, what is left recursively fill other positions
-
-Also an array can be used to store if a particular element is taken. Here we have used a list
 */
 class Solution {
     public List<List<Integer>> permute(int[] nums) {
