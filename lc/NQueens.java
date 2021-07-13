@@ -1,6 +1,12 @@
-/* Solution 2: Optimized approach
+/* Solution 2: Optimized approach from solution 1
 Here instead of using a set used a sequence array. The value of the sequence array represents the String
 example if sequence[i] = 2 , this implies string is [..Q.], ie Q is in 2th position
+
+Condition: If deltaX (The horizontal distance between the queens) == deltaY (vertical distance between the queens),
+then condition not met
+
+SC = O(N) for visited array + O(N) for sequence array => O(N)
+TC = O(N!) for permutation * O(N^2) for the condition check => O(N^2 * N!)
 */
 class Solution {
     public List<List<String>> solveNQueens(int n) {
@@ -64,7 +70,7 @@ class Solution {
     }
 }
 
-
+/*
 Solution 1: Kind of brute
 Created a set, for example n = 4 => set = [ [Q...], [.Q..], [..Q.], [...Q] ]
 Then found permutations of the set provided the condition is met
