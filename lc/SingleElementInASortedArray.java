@@ -40,7 +40,7 @@ class Solution {
                 max = mid - 2; //our answer lies in the left fragment
             } else if ( (mid % 2 != 0) && (nums[mid + 1] == nums[mid]) ) {
                 max = mid - 1; //our answer lies in the left fragment
-            } else if ( (mid % 2 == 0) && (nums[mid + 1] == nums[mid]) ) {
+            } else if ( nums[mid + 1] == nums[mid] ) {
                 min = mid + 2; //our answer lies in the right fragment
             } else {
                 min = mid + 1; //our answer lies in the right fragment
