@@ -39,6 +39,7 @@ public class Solution {
                 if (midNum <= num) {
                     min = mid + 1;
                     countCandidate = min; //there will be min numbers which are less than or equal to midNum
+                    
                     //this midNum satisfies the condition, hence this is the countCandidatebut 
                     //now we want to check if there is any number to the right of midNum which also satisfies the condition
                 } else {
