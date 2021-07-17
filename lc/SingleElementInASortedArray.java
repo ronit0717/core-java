@@ -1,3 +1,12 @@
+/* Solution 4, Striver's solution using binary search
+This approach uses following concept
+
+In the left half of break point, the first instance of any number is at the even index
+Whereas in the right hald of break point, the first instance of any number is at the odd index
+
+Rest its similar to Solution 3
+*/
+
 /* Solution 3, using binary search TC = O(logN) */
 /*
 Do binary search, if the element in the mid is the singular element, return it
