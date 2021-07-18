@@ -9,6 +9,9 @@ R1 => element to the immediate right of partition of array 2
 
 TC = O(Log(min of length of nums1, nums2)) = O(MIN(nums1.length, nums2.length))
 SC = O(1)
+
+Similar question: Kth element in two sorted arrays
+https://github.com/ronit0717/core-java/blob/master/gfg/KthElementOfTwoSortedArrays.java
 */
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
