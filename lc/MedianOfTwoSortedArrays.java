@@ -22,7 +22,7 @@ class Solution {
         int leftSegLength = (evenCase) ? (totalLength / 2) : (totalLength / 2) + 1;//left segment length
         
         int start = 0;
-        int end = leftSegLength - 1;
+        int end = Math.min(nums1.length, leftSegLength) - 1;
         int mid1 = 0, mid2 = 0;
         
         while (start <= end) {
@@ -34,7 +34,7 @@ class Solution {
                 continue;
             }
             
-            //check condition
+            //check condition => range on mid1 and mid2 check followed by l1,r2 check and l2,r1 check
             if (mid2 < (nums2.length - 1) && nums1[mid1] > nums2[mid2 + 1]) { //l1 if greater than r2
                 end = mid1 - 1;
                 continue;
@@ -48,6 +48,9 @@ class Solution {
             break;
         }
         
+        if (end < 0) {
+            mid1 = -1; //ie, we are not selecting any element from nums1
+        }
         mid2 = leftSegLength - mid1 - 2;
         
         int l1 = (mid1 >= 0 && mid1 < nums1.length) ? nums1[mid1] : Integer.MIN_VALUE;
