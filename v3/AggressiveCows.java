@@ -1,5 +1,10 @@
 //Link: https://www.spoj.com/problems/AGGRCOW/
 
+/*
+TC= N * LogN
+SC = O(1)
+*/
+
 import java.util.Scanner;
 import java.lang.Math;
 
@@ -52,17 +57,17 @@ public class HelloWorld {
 
      private static boolean canPlaceCows(int[] pos, int dist, int C, int N) {
          int count;
-         for (int i = 0; i < N - 1; i++) {
-             count = 1; //initialized to 1 as first cow placed here at ith position
-             int k = i;
-             for (int j = i + 1; j < N; j++) {
-                 if ((pos[j] - pos[k]) >= dist) {
-                    //we can place the cow here in jth position
-                     count++;
-                     k = j;
-                     if (count == C) {
-                         return true;
-                     }
+         int k = 0; //cow placed here at 0th position as a greedy way to fit maximum number of cows, the
+         //first cow will definitely be eligible to be here in 0th position
+         
+         count = 1; //initialized to 1 as first cow placed here at 0th position
+         for (int j = i + 1; j < N; j++) {
+             if ((pos[j] - pos[k]) >= dist) {
+                //we can place the cow here in jth position
+                 count++;
+                 k = j;
+                 if (count == C) {
+                     return true;
                  }
              }
          }
