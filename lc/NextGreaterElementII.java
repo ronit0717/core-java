@@ -8,7 +8,17 @@ Steps:
     2.2 If the stack number is less than or equal to current element remove it
         Else, this is the next greater element
     2.3 If we dont find any next greater element assign -1 to next greater element array
+
+
+Similar Question: Next Smaller Element
+https://github.com/ronit0717/core-java/blob/master/gfg/NextSmallerElement.java
+
+TC = O(2n + 2n)
+Its not n^2 as we remove the elements as well, so a total of 2n times it can go in total across all
+iterations
 */
+
+
 class Solution {
     public int[] nextGreaterElements(int[] nums) {
         int n = nums.length;

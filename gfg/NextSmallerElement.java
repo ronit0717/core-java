@@ -8,6 +8,12 @@
     1.3 If we dont find any next smaller element assign -1 to next smaller element array
 */
 
+//Similar Question: Next greater elemennt => https://github.com/ronit0717/core-java/blob/master/lc/NextGreaterElementII.java
+
+/*
+TC = O(2n), as we remove the elements, so max it will go n times depth in total
+*/
+
 import java.util.Stack;
 
 public class HelloWorld{
