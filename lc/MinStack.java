@@ -47,7 +47,7 @@ class MinStack {
             min = value;
             return;
         }   
-        if (value < min) { //then we push the modified value
+        if (value < min) { //then we push the modified value and update min
             st.push(2*value - min);
             min = value;
         } else {
@@ -57,13 +57,13 @@ class MinStack {
     
     public void pop() {
         long val = st.pop();
-        if (val < min) { //then update the min
+        if (val < min) { //this condition always true for modified value, and change min
             min = 2*min - val;   
         }
     }
     
     public int top() {
-        if (st.peek() < min) {
+        if (st.peek() < min) { //this condition always true for modified value
             return min.intValue();
         }
         return st.peek().intValue();
