@@ -1,5 +1,6 @@
 /*
 Solution 2: Storing altered value in stack
+SC = O(N), TC = O(1)
 
 Logic:
 
