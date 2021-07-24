@@ -10,7 +10,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
     else if (right == null)
         return left;
     else
-        return root;
+        return root; //means both left and right != null, means root is the LCA
         
 }
 
