@@ -1,3 +1,26 @@
+//Solution 2 : Cleaner Code
+class Solution {
+    public void sortColors(int[] nums) {
+        int zero = 0;
+        int two = nums.length - 1;
+        
+        for (int i = 0; i <= two; i++) {
+            if (nums[i] == 0) {
+                nums[i] = nums[zero];
+                nums[zero] = 0;
+                zero++;
+            } else if (nums[i] == 2) {
+                nums[i] = nums[two];
+                nums[two] = 2;
+                two--;
+                i--; //to revaluate
+            }
+        }
+    }
+}
+
+
+//Solution 1
 class Solution {
     public void sortColors(int[] nums) {
         int i = 0;
