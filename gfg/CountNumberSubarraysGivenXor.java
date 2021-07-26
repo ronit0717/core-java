@@ -1,7 +1,7 @@
 //https://www.geeksforgeeks.org/count-number-subarrays-given-xor/
 
 /* TC = O(N)
-Concept x ^ m = z , then y = z ^ x
+Concept x ^ y = z , then y = z ^ x
 
 As we loop we maintain the current xor from leftmost index to current index
 If current xor == required xor, then increment count
