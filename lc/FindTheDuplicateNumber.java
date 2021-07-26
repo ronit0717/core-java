@@ -1,4 +1,4 @@
-//Solution 1  //Linkedlist cycle approach
+//Solution 1  //Linkedlist cycle approach : Basic intuition is that for duplicate number, two numbers are pointing to the same duplicate number
 class Solution {
     public int findDuplicate(int[] nums) {
         int slow = nums[0];
