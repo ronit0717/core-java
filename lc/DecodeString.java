@@ -16,12 +16,12 @@ class Solution {
                     count = count * 10 + (s.charAt(i + 1) - '0');
                     i++;
                 }
-                countStack.push(count);
+                countStack.push(count); //when number encountered, push number in count stack
             } else if (c == '[') {
-                strStack.push(sb.toString());
+                strStack.push(sb.toString()); //push existing string to string stack
                 sb = new StringBuilder();
             } else if (c == ']') {
-                String innerString = sb.toString();
+                String innerString = sb.toString(); //current string is the inner string
                 sb = new StringBuilder(strStack.pop());
                 int count = countStack.pop();
                 while(count > 0) {
