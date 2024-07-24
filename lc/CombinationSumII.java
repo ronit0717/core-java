@@ -2,32 +2,37 @@
 */
 class Solution {
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        List<List<Integer>> res = new LinkedList<>();
         Arrays.sort(candidates);
-        combUtil(0, target, candidates, null, res);
-        return res;
+        List<List<Integer>> answer = new LinkedList();
+        List<Integer> selectedCandidates = new LinkedList();
+        execute(0, target, candidates, selectedCandidates, answer);
+        return answer;
     }
-    
-    private void combUtil(int index, int target, int[] candidates, List<Integer> cand, List<List<Integer>> res) {
-        if (index == candidates.length) {
+
+    private void execute(int index, 
+                         int target, 
+                         int[] candidates, 
+                         List<Integer> selectedCandidates, 
+                         List<List<Integer>> answer) {
+        
+        if (target == 0) {
+            answer.add(new LinkedList<>(selectedCandidates));
             return;
         }
+        int prev = -1;
         for (int i = index; i < candidates.length; i++) {
-            if (i != index && candidates[i] == candidates[i - 1]) {
+            int curr = candidates[i];
+            if (prev == curr) {
                 continue;
             }
-            if (candidates[i] == target) {
-                List<Integer> newCand = (cand == null) ? new LinkedList<>() : new LinkedList<>(cand);
-                newCand.add(candidates[i]);
-                res.add(newCand);
-                return;
-            } else if (candidates[i] < target) {
-                List<Integer> newCand = (cand == null) ? new LinkedList<>() : new LinkedList<>(cand);
-                newCand.add(candidates[i]);
-                combUtil(i + 1, target - candidates[i], candidates, newCand, res);
-            } else {
-                return; //as its sorted all the elements to the right will definitely greater than the target
+            if (curr > target) {
+                break;
             }
+            selectedCandidates.add(curr);
+            execute(i + 1, target - curr, candidates, selectedCandidates, answer);
+            selectedCandidates.removeLast();
+            prev = curr;
         }
     }
+
 }
