@@ -50,3 +50,34 @@ class Solution {
         return res;
     }
 }
+
+/**
+ * Solution 2: Striver's solution.
+ */
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        List<Integer> candidates = new LinkedList();
+        List<List<Integer>> result = new LinkedList();
+        evaluate(0, nums, candidates, result);
+        return result;
+    }
+
+    private void evaluate(int index, int[] nums, List<Integer> candidates, List<List<Integer>> result) {
+        result.add(new LinkedList<>(candidates)); //adding of current size
+        if (index >= nums.length) {
+            return;
+        }
+        int prev = -11;
+        for (int i = index; i < nums.length; i++) {
+            int curr = nums[i];
+            if (prev == curr) {
+                continue; //skip
+            }
+            candidates.add(curr);
+            evaluate(i + 1, nums, candidates, result); //pick
+            candidates.removeLast();
+            prev = nums[i];
+        }
+    }
+}
