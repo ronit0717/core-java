@@ -68,3 +68,22 @@ class Solution{
         return res;
     }
 }
+
+/* Solution 3: Recursion: Code simplified */
+class Solution {
+    ArrayList<Integer> subsetSums(ArrayList<Integer> arr, int n) {
+        // code here
+        ArrayList<Integer> result = new ArrayList<>();
+        execute(0, 0, arr, result);
+        return result;
+    }
+    
+    void execute(int sum, int index, ArrayList<Integer> arr, ArrayList<Integer> result) {
+        if (index >= arr.size()) {
+            result.add(sum);
+            return;
+        }
+        execute(sum, index+1, arr, result); //not pick
+        execute(sum + arr.get(index), index+1, arr, result); //pick
+    }
+}
