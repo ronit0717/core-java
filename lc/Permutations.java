@@ -1,4 +1,67 @@
 /*
+Solution 5: Swap approach, short solution
+*/
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> answer = new LinkedList<>();
+        List<Integer> candidates = new ArrayList<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            candidates.add(i, nums[i]);
+        }
+        swapPermute(0, candidates, answer);
+        return answer;
+    }
+
+    private void swapPermute(int index, List<Integer> candidates, List<List<Integer>> answer) {
+        if (index == candidates.size()) {
+            answer.add(candidates);
+            return;
+        }
+        for (int i = index; i < candidates.size(); i++) {
+            List<Integer> newCandidates = new ArrayList<>(candidates);
+            //swap index with i
+            int temp = newCandidates.get(index);
+            newCandidates.set(index, newCandidates.get(i));
+            newCandidates.set(i, temp);
+            swapPermute(index + 1, newCandidates, answer);
+        }
+    }
+
+}
+
+/*
+Solution 4: Visited index approach, with recursion
+*/
+class Solution {
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> answer = new LinkedList<>();
+        Set<Integer> pickedIndices = new HashSet<>();
+        List<Integer> candidates = new LinkedList<>();
+        perm(nums, answer, pickedIndices, candidates);
+        return answer;
+    }
+
+    private void perm(int[] nums, 
+                        List<List<Integer>> answer, 
+                        Set<Integer> pickedIndices, List<Integer> candidates) {
+        if (pickedIndices.size() == nums.length) {
+            answer.add(new LinkedList<>(candidates));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!pickedIndices.contains(i)) {
+                candidates.add(nums[i]);
+                pickedIndices.add(i);
+                perm(nums, answer, pickedIndices, candidates);
+                pickedIndices.remove(i);
+                candidates.removeLast();
+            }
+        }
+    }
+}
+
+
+/*
 Solution 3: Using Swap method, swap and unswap!!
 TC = O(n!) * O(n) for array clone = O(n * n!)
 SC = O(1)
