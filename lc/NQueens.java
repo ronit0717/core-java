@@ -1,3 +1,127 @@
+/** Solutio 4: Backtracking Optimised (Stores a hash for Queen position) */
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        char[][] board = new char[n][n];
+        //populate empty board
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        List<List<String>> ans = new LinkedList<>();
+        boolean[] rowHash = new boolean[n];
+        boolean[] diagHash1 = new boolean[(2*n - 1)];
+        boolean[] diagHash2 = new boolean[(2*n - 1)];
+        recurr(0, board, ans, n, rowHash, diagHash1, diagHash2);
+        return ans;
+    }
+
+    private void recurr(int index, char[][] board, 
+                        List<List<String>> ans, 
+                        int n,
+                        boolean[] rowHash,
+                        boolean[] diagHash1,
+                        boolean[] diagHash2) {
+        if (index == n) {
+            ans.add(buildAnswer(board, n));
+            return;
+        }
+        for(int i = 0; i < n; i++) {
+            int hashIndex1 = i + index; // (row + col)
+            int hashIndex2 = (n - 1) + (i - index); // (n - 1) + (row - col)
+            if(rowHash[i] || diagHash1[hashIndex1] || diagHash2[hashIndex2]) {
+                continue;
+            }
+
+            //Put Queen
+            board[i][index] = 'Q';
+            rowHash[i] = true;
+            diagHash1[hashIndex1] = true;
+            diagHash2[hashIndex2] = true;
+
+            recurr(index + 1, board, ans, n, rowHash, diagHash1, diagHash2);
+
+            //Remove Queen
+            board[i][index] = '.';
+            rowHash[i] = false;
+            diagHash1[hashIndex1] = false;
+            diagHash2[hashIndex2] = false;
+        }
+    }
+
+    private List<String> buildAnswer(char[][] board, int n) {
+        List<String> ans = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            StringBuffer sb = new StringBuffer();
+            for (int j = 0; j < n; j++) {
+                sb.append(board[i][j]);
+            }
+            ans.add(sb.toString());
+        }
+        return ans;
+    }
+}
+
+/** Solution 3: Backtracking (Not optimised. Uses direction to search the matrix for validity) */
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        char[][] board = new char[n][n];
+        //populate empty board
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                board[i][j] = '.';
+            }
+        }
+        List<List<String>> ans = new LinkedList<>();
+        recurr(0, board, ans, n);
+        return ans;
+    }
+
+    private void recurr(int index, char[][] board, List<List<String>> ans, int n) {
+        if (index == n) {
+            ans.add(buildAnswer(board, n));
+            return;
+        }
+        for(int i = 0; i < n; i++) {
+            if(!canFill(i, index, board, n)) {
+                continue;
+            }
+            board[i][index] = 'Q';
+            recurr(index + 1, board, ans, n);
+            board[i][index] = '.';
+        }
+    }
+
+    private boolean canFill(int row, int col, char[][] board, int n) {
+        int[][] dirrArr = {{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        for (int i = 0; i < 8; i++) {
+            int[] dirr = dirrArr[i];
+            int x = row + dirr[0];
+            int y = col + dirr[1];
+            while(x >= 0 && x < n && y >= 0 && y < n) {
+                if (board[x][y] == 'Q') {
+                    return false;
+                }
+                x = x + dirr[0];
+                y = y + dirr[1];
+            }
+        }
+        return true;
+    }
+
+    private List<String> buildAnswer(char[][] board, int n) {
+        List<String> ans = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            StringBuffer sb = new StringBuffer();
+            for (int j = 0; j < n; j++) {
+                sb.append(board[i][j]);
+            }
+            ans.add(sb.toString());
+        }
+        return ans;
+    }
+}
+
 /* Solution 2: Optimized approach from solution 1
 Here instead of using a set used a sequence array. The value of the sequence array represents the String
 example if sequence[i] = 2 , this implies string is [..Q.], ie Q is in 2th position
