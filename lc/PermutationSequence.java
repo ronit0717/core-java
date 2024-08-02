@@ -1,3 +1,55 @@
+/* Solution 2: Similar, simplified */
+class Solution {
+    public String getPermutation(int n, int k) {
+        List<Integer> nums = buildNums(n);
+        Map<Integer, Integer> countMap = buildFactorial(n);
+        List<Integer> candidates = new LinkedList<>();
+        return evaluate(nums, candidates, k - 1, countMap);
+    }
+
+    private String evaluate(List<Integer> nums, 
+                            List<Integer> candidates, 
+                            int k, //index starts with 0
+                            Map<Integer, Integer> countMap) {
+        if (nums.size() == 0) {
+            return buildString(candidates);
+        }
+        int blockSize = countMap.get(nums.size() - 1);
+        int offset = k / blockSize;
+        int newk = k % blockSize;
+        candidates.add(nums.get(offset));
+        nums.remove(offset);
+        return evaluate(nums, candidates, newk, countMap);
+    }
+
+    private String buildString(List<Integer> candidates) {
+        StringBuffer sb = new StringBuffer();
+        for (Integer i : candidates) {
+            sb.append((char)(i + '0'));
+        }
+        return sb.toString();
+    }
+
+    private List<Integer> buildNums(int n) {
+        List<Integer> nums = new ArrayList<>(n);
+        for (int i = 1; i <= n; i++) {
+            nums.add(i);
+        }
+        return nums;
+    }
+
+    private Map<Integer, Integer> buildFactorial(int n) {
+        Map<Integer, Integer> fact = new HashMap();
+        fact.put(0, 1);
+        int p = 1;
+        for (int i = 1; i <= n; i++) {
+            p = p * i;
+            fact.put(i, p);
+        }
+        return fact;
+    }
+}
+
 /* Solution 1
 Space complexity = O(N) for list + O(N) for map = O(N)
 Time complexity = O(N) * O(N) to remove element from list = O(N^2)
