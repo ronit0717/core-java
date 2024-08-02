@@ -1,3 +1,44 @@
+/** Solution 2 : Similar approach*/
+class Solution {
+    public List<List<String>> partition(String s) {
+        List<List<String>> ans = new LinkedList<>();
+        List<String> candidates = new LinkedList<>();       
+        evaluate(s, 0, candidates, ans);
+        return ans;
+    }
+
+    private void evaluate(String s, int index, List<String> candidates, List<List<String>> ans) {
+        if (index >= s.length()) {
+            ans.add(new LinkedList<>(candidates));
+            return;
+        }
+        for (int i = index + 1; i <= s.length(); i++) {
+            String subStr = s.substring(index, i);
+            if(!isPalindrome(subStr)) {
+                continue;
+            }
+            candidates.add(subStr);
+            evaluate(s, i, candidates, ans);
+            candidates.removeLast();
+        }
+    }
+
+    private boolean isPalindrome(String s) {
+        int start = 0;
+        int end = s.length() - 1;
+        while (end >= start) {
+            if (s.charAt(start) != s.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
+}
+
+
+/** Solution 1 */
 class Solution {
     public List<List<String>> partition(String s) {
         List<List<String>> res = new LinkedList<>();
