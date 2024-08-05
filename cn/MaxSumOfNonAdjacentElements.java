@@ -1,4 +1,33 @@
 /**
+ * Solution 1.3: Tabulation space optimised
+ */
+import java.util.* ;
+
+import java.io.*; 
+import java.util.*;
+public class Solution {
+	public static int maximumNonAdjacentSum(ArrayList<Integer> nums) {
+		// Write your code here.
+		int prev = -1;
+		int prev2 = -1;
+		for (int i = nums.size() - 1; i >= 0; i--) {
+			if (i == nums.size() - 1) {
+				prev = nums.get(i);
+			} else if (i == nums.size() - 2) {
+				int sum = Math.max(prev, nums.get(i)); //Either current element will be picked or last element
+				prev2 = prev;
+				prev = sum;
+			} else {
+				int sum = Math.max((nums.get(i) + prev2), prev);
+				prev2 = prev;
+				prev = sum;
+			}
+		}
+		return prev;
+	}
+}
+
+/**
  * Solution 1.2: Tabulation
  */
 import java.util.* ;
