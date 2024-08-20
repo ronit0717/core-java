@@ -10,29 +10,26 @@ public class Solution {
         int[] dp = new int[tar + 1];
         int[] prev = new int[tar + 1];
         for (int i = num.length - 1; i >= 0; i--) {
-            for (int k = 0; k < dp.length; k++) {
-                prev[k] = dp[k];
+            for (int j = 0; j < dp.length; j++) {
+                prev[j] = dp[j];
             }
-            for (int j = 0; j <= tar; j++) {
-                if (j == 0) {
-                    dp[j] = 1;
-                    continue;
-                }
+            for (int t = 0; t <= tar; t++) {
                 int count = 0;
-                int large = 1000000007;
                 if (i == num.length - 1) {
-                    if (num[i] == j) {
-                        count += 1;
+                    if (t == 0 && num[i] == 0) {
+                        count = 2; //pick and not pick -> 2 possibilities
+                    } else if (t == 0 || t == num[i]) {
+                        count = 1;
+                    } else {
+                        count = 0;
                     }
                 } else {
-                    count += prev[j]; //not pick case
-                    if (num[i] < j) {
-                        count = (count % large + (prev[j - num[i]] % large)) % large;
-                    } else if (num[i] == j) {
-                        count += 1;
+                    count += prev[t]; //not pick
+                    if (num[i] <= t) {
+                        count+= prev[t - num[i]]; //pick case
                     }
                 }
-                dp[j] = count % large;
+                dp[t] = count % 1000000007;
             }
         }
         return dp[tar];
@@ -50,26 +47,23 @@ public class Solution {
         // Write your code here.
         int[][] dp = new int[num.length][tar + 1];
         for (int i = num.length - 1; i >= 0; i--) {
-            for (int j = 0; j <= tar; j++) {
-                if (j == 0) {
-                    dp[i][j] = 1;
-                    continue;
-                }
+            for (int t = 0; t <= tar; t++) {
                 int count = 0;
-                int large = 1000000007;
                 if (i == num.length - 1) {
-                    if (num[i] == j) {
-                        count += 1;
+                    if (t == 0 && num[i] == 0) {
+                        count = 2; //pick and not pick -> 2 possibilities
+                    } else if (t == 0 || t == num[i]) {
+                        count = 1;
+                    } else {
+                        count = 0;
                     }
                 } else {
-                    count += dp[i + 1][j]; //not pick case
-                    if (num[i] < j) {
-                        count = (count % large + (dp[i + 1][j - num[i]] % large)) % large;
-                    } else if (num[i] == j) {
-                        count += 1;
+                    count += dp[i + 1][t]; //not pick
+                    if (num[i] <= t) {
+                        count+= dp[i + 1][t - num[i]]; //pick case
                     }
                 }
-                dp[i][j] = count % large;
+                dp[i][t] = count % 1000000007;
             }
         }
         return dp[0][tar];
@@ -95,25 +89,29 @@ public class Solution {
     }
 
     private static int evaluate(int index, int[] nums, int tar, int[][] dp) {
-        if (index >= nums.length) {
-            return 0;
-        }
         if (dp[index][tar] != -1) {
             return dp[index][tar];
         }
-        if (tar == 0) {
-            dp[index][tar] = 1;
-            return 1;
-        }
         int count = 0;
-        int large = 1000000007;
-        count += evaluate(index + 1, nums, tar, dp) % large; //not pick
-        if (nums[index] < tar) {
-            count = ((count % large) + (evaluate(index + 1, nums, tar - nums[index], dp) % large)) % large;
-        } else if (nums[index] == tar) {
-            count = (count % large + 1 % large) % large;
+        if (index == nums.length - 1) {
+            if (tar == 0 && nums[index] == 0) {
+                count = 2; //pick and not pick two possibilities
+            } else if (tar == 0 || tar == nums[index]) {
+                count = 1;
+            } else {
+                count = 0;
+            }
+            dp[index][tar] = count;
+            return count;
         }
-        dp[index][tar] = count;
+        
+        count += evaluate(index + 1, nums, tar, dp); //not pick
+        if (nums[index] <= tar) {
+            count += evaluate(index + 1, nums, tar - nums[index], dp);
+        }
+        int large = 1000000007;
+        count = count % large;
+        dp[index][tar] = count ;
         return count;
     }
 }
