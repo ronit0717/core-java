@@ -1,4 +1,31 @@
 /**
+ * Solution 1.4: Tabulation with single 1D DP array (no prev used)
+ */
+public class Solution {
+    public static int unboundedKnapsack(int n, int w, int[] profit, int[] weight) {
+        // Write your code here.
+        int[] dp = new int[w + 1];
+        for (int i = 0; i < n; i++) {
+            for (int t = 0; t <= w; t++) {
+                int money = 0;
+                if (i == 0) {
+                    money = (t / weight[i]) * profit[i];
+                } else {
+                    int notPick = dp[t];
+                    int pick = -1;
+                    if (weight[i] <= t) {
+                        pick = profit[i] + dp[t - weight[i]];
+                    }
+                    money = Math.max(notPick, pick);
+                }
+                dp[t] = money;
+            }
+        }
+        return dp[w];
+    }
+}
+
+/**
  * Solution 1.3: Tabulation with space optimisation
  */
 public class Solution {
