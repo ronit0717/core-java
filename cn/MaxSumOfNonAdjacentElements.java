@@ -76,10 +76,10 @@ public class Solution {
 			return 0;
 		}
 		if (dp[index] != -1) {
-			return dp[index]; //implies adjacent was not picked. To maximise sum, we should pick it for sure
+			return dp[index];
 		}
 		if (dp[index] == (nums.size() - 1)) {
-			dp[index] = nums.get(index);
+			dp[index] = nums.get(index); //implies adjacent was not picked. To maximise sum, we should pick it for sure
 		} else {
 			dp[index] = Math.max(evaluate(index + 1, nums, dp), (nums.get(index) + evaluate(index + 2, nums, dp)));
 		}
