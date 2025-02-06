@@ -1,6 +1,6 @@
 /**
  * Solution 5: Alternate (non intutive) solution
- * TC = O(N), SC = O(N)
+ * TC = O(N^2), SC = O(N)
  */
 class Solution {
     public int lengthOfLIS(int[] nums) {
