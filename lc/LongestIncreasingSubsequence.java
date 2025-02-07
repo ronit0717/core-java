@@ -1,4 +1,37 @@
 /**
+ * Solution 6 : Binary search
+ * TC = O(NLogN), SC = O(N)
+ */
+class Solution {
+    // Function to find length of longest increasing subsequence.
+    static int lis(int arr[]) {
+        // code here
+        ArrayList<Integer> dpList = new ArrayList<>();
+        dpList.add(arr[0]);
+        for (int i = 1; i < arr.length; i++) {
+            int start = 0;
+            int end = dpList.size() - 1;
+            while (start <= end) {
+                int mid = (start + end) / 2;
+                if (arr[i] > dpList.get(mid)) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+            int index = end + 1; //index to keep the element
+            if (index == dpList.size()) {
+                dpList.add(arr[i]);
+            } else {
+                dpList.set(index, arr[i]);
+            }
+        }
+        
+        return dpList.size();
+    }
+}
+
+/**
  * Solution 5: Alternate (non intutive) solution
  * TC = O(N^2), SC = O(N)
  */
