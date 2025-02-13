@@ -1,3 +1,6 @@
+/*
+TC = O(M * N * (2 * N)), SC = O(N)
+*/
 class Solution {
     public int maximalRectangle(char[][] matrix) {
         int m = matrix.length;
