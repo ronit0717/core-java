@@ -52,7 +52,7 @@ public class Solution {
                 postOrder.add(node.data);
                 inOrder.add(node.data);
                 prev = st.pop();
-            } else if (node.right == null || prev == node.right) { //no right or left and right already visited
+            } else if (node.right == null || prev == node.right) { //no right or right already visited
                 postOrder.add(node.data);
                 prev = st.pop();
             } else { //need to traverse right
