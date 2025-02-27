@@ -13,20 +13,20 @@
  *     }
  * }
  */
-//Solution 2 (Slower) : Iterative (Level order traversing)
 class Solution {
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> list = new LinkedList<>();
+        if(root == null) {
+            return list;
         }
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
-        int height = 0;
         while(!q.isEmpty()) {
-            height++;
             int size = q.size();
+            List<Integer> levelList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
+                levelList.add(node.val);
                 if (node.left != null) {
                     q.add(node.left);
                 }
@@ -34,15 +34,8 @@ class Solution {
                     q.add(node.right);
                 }
             }
+            list.add(levelList);
         }
-        return height;
-    }
-}
-
-
-//Solution 1 : Recursive Solution
-class Solution {
-    public int maxDepth(TreeNode root) {
-        return root == null ? 0 : 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+        return list;
     }
 }

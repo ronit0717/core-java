@@ -13,6 +13,7 @@
  *     }
  * }
  */
+//Solution 2: TC = O(N), SC = O(N) Auxilary stack space
 class Solution {
     public boolean isBalanced(TreeNode root) {
         int height = getBalancedHeight(root);
@@ -38,5 +39,33 @@ class Solution {
             return -1;
         }
         return 1 + Math.max(rightHeight, leftHeight);
+    }
+}
+
+/**
+ * Solution 1: TC = O(N^2), SC = O(N)
+ */
+
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (!isBalanced(root.left) || !isBalanced(root.right)) {
+            return false;
+        }
+        int leftHeight = getHeight(root.left);
+        int rightHeight = getHeight(root.right);
+        if (Math.abs(leftHeight - rightHeight) > 1) {
+            return false;
+        }
+        return true;
+    }
+
+    private int getHeight(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return 1 + Math.max(getHeight(root.left), getHeight(root.right));
     }
 }
