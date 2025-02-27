@@ -13,6 +13,59 @@
  *     }
  * }
  */
+
+//Solution 2 (Using Level Order Traversal)
+class Solution {
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (root == null) {
+            return result;
+        }
+        TreeMap<Integer, TreeMap<Integer, List<Integer>>> map = new TreeMap<>();
+        Queue<Object[]> q = new LinkedList<>();
+        Object[] rootObjArr = {root, 0, 0};
+        q.add(rootObjArr);
+        while(!q.isEmpty()) {
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                Object[] nodeArr = q.poll();
+                TreeNode node = (TreeNode)nodeArr[0];
+                int level = (int)nodeArr[1];
+                int axis = (int)nodeArr[2];
+
+                if (node.left != null) {
+                    Object[] leftObjArr = {node.left, level + 1, axis - 1};
+                    q.add(leftObjArr);
+                }
+                if (node.right != null) {
+                    Object[] rightObjArr = {node.right, level + 1, axis + 1};
+                    q.add(rightObjArr);
+                }
+
+                TreeMap<Integer, List<Integer>> axisMap = 
+                    map.containsKey(axis) ? map.get(axis) : new TreeMap<>();
+                List<Integer> data = axisMap.containsKey(level) ? axisMap.get(level) : new LinkedList<>();
+                data.add(node.val);
+                Collections.sort(data);
+                axisMap.put(level, data);
+                map.put(axis, axisMap);
+            }
+        }
+        //evaluate result
+        for (Map.Entry<Integer, TreeMap<Integer, List<Integer>>> entry : map.entrySet()) {
+            TreeMap<Integer, List<Integer>> axisMap = entry.getValue();
+            List<Integer> axisData = new LinkedList<>();
+            for (Map.Entry<Integer, List<Integer>> subEntry : axisMap.entrySet()) {
+                List<Integer> levelData = subEntry.getValue();
+                axisData.addAll(levelData);
+            }
+            result.add(axisData);
+        }
+        return result;
+    }
+}
+
+//Solution 1 (Using DFS)
 class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
         if (root == null) {
