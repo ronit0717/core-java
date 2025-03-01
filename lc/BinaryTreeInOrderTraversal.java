@@ -13,6 +13,53 @@
  *     }
  * }
  */
+//Solution 2: Morris Traversal (SC = O(1), TC ~ O(N))
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ansList = new LinkedList<>();
+        TreeNode node = root;
+        while(node != null) {
+            if (node.left == null) {
+                ansList.add(node.val); //inorder
+                node = node.right;
+                continue;
+            }
+            //1. In left subtree find the right most node (lstrmn)
+            TreeNode lstrmn = node.left;
+            while(lstrmn.right != null && lstrmn.right != node) {
+                lstrmn = lstrmn.right;
+            }
+            if (lstrmn.right == null) {
+                //Create link
+                lstrmn.right = node;
+                node = node.left; //Need to traverse the left subtree 
+            } else if (lstrmn.right == node) { //link already present
+                //Implies left subtree already traversed
+                lstrmn.right = null; //cut link
+                ansList.add(node.val); //inorder
+                node = node.right; //Need to traverse the right subtree
+            }
+        }
+        return ansList;
+    }
+}
+
+//Solution 1
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
