@@ -13,6 +13,8 @@
  *     }
  * }
  */
+
+//TC = O(N), SC=(O(2H))
 class Solution {
     public boolean findTarget(TreeNode root, int k) {
         Stack<TreeNode> ascStack = initAscStack(root);
@@ -71,3 +73,6 @@ class Solution {
         }
     }
 }
+
+//Solution 0: Write inorder (which will be sorted), and apply logic of Two Sum (https://takeuforward.org/data-structure/two-sum-check-if-a-pair-with-given-sum-exists-in-array/)
+//TC = O(N), SC = O(N) to store the inorder
