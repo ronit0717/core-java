@@ -1,12 +1,19 @@
+//Solution 2: Using Hashmap (TC = O(N), SC=O(N)) considering constant time for hashmap operation
 class Solution {
     public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> compMap = new HashMap<>();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] result = new int[2];
         for (int i = 0; i < nums.length; i++) {
-            if (compMap.containsKey(nums[i])) {
-                return new int[]{compMap.get(nums[i]), i};
+            int val = target - nums[i];
+            if (map.containsKey(val)) {
+                result[0] = map.get(val);
+                result[1] = i;
+                break;
             }
-            compMap.put((target - nums[i]), i);
+            map.put(nums[i], i);
         }
-        return null;
+        return result;
     }
 }
+
+//Solution 1: Brute Force ->> Maintain two pointers i and j and check for the condition (TC ~ O(N^2))
