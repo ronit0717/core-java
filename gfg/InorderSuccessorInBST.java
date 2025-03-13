@@ -21,7 +21,7 @@ class Solution {
         Node node = root;
         while(node != null) {
             if (node.data > x.data) {
-              ans = ans == -1 ? node.data : Math.min(ans, node.data);
+              ans = node.data;
               node = node.left;  
             } else {
               node = node.right;
