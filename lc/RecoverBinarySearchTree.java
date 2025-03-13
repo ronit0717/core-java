@@ -13,6 +13,54 @@
  *     }
  * }
  */
+//Solution 2: Single pass solution
+//TC = O(N), SC = O(Height) Auxillary stack space + O(N) for ArrayList
+class Solution {
+    private TreeNode prev = null;
+    private int index1 = -1;
+    private int index2 = -1;
+    private int index;
+
+    public void recoverTree(TreeNode root) {
+        List<TreeNode> inorder = new ArrayList<>();
+        buildInorder(root, inorder);
+        swap(inorder);
+    }
+
+    private void swap(List<TreeNode> inorder) {
+        if (index2 == -1) {
+            //adjacent case. Swap index1-1 and index1
+            int temp = inorder.get(index1 - 1).val;
+            inorder.get(index1 - 1).val = inorder.get(index1).val;
+            inorder.get(index1).val = temp;;
+        } else {
+            //swap index1 - 1 and index2
+            int temp = inorder.get(index1 - 1).val;
+            inorder.get(index1 - 1).val = inorder.get(index2).val;
+            inorder.get(index2).val = temp;
+        }
+    }
+
+    private void buildInorder(TreeNode node, List<TreeNode> inorder) {
+        if (node == null) {
+            return;
+        }
+        buildInorder(node.left, inorder);
+        if (prev != null && prev.val > node.val) {
+            if (index1 == -1) {
+                index1 = index;
+            } else {
+                index2 = index;
+            }
+        }
+        inorder.add(node);
+        index++;
+        prev = node;
+        buildInorder(node.right, inorder);
+    }
+}
+
+//Solution 1: Two pass solution
 //TC = O(N) + O(N), SC = O(Height) Auxillary stack space + O(N) for ArrayList
 class Solution {
     public void recoverTree(TreeNode root) {
