@@ -1,3 +1,4 @@
+//Tarjan's Algorithms
 class Solution {
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         List<List<Integer>> adj = buildAdj(n, connections);
