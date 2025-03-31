@@ -68,7 +68,6 @@ class Solution {
                         continue;
                     }
                     set.add(ultimateParentY);
-                    int newSize = ds.getSize(ultimateParentY);
                     size += ds.getSize(ultimateParentY);
                 }
                 if (size > maxSize) {
