@@ -5,11 +5,12 @@ class Solution {
         int i = 0;
         int j = 0;
         int maxLen = 0;
+        int maxFreq = 0;
         while(j < s.length()) {
             char c = s.charAt(j);
             freq[c - 'A']++;
             int len = j - i + 1;
-            int maxFreq = getMaxFreq(freq);
+            maxFreq = Math.max(maxFreq, freq[c - 'A']);
             int replaceCharCount = len - maxFreq;
             if (replaceCharCount <= k) {
                 maxLen = Math.max(maxLen, len);
@@ -22,17 +23,9 @@ class Solution {
         }
         return maxLen;
     }
-
-    private int getMaxFreq(int[] freq) {
-        int max = 0;
-        for (int i = 0; i < 26; i++) {
-            max = Math.max(max, freq[i]);
-        }
-        return max;
-    }
 }
 
-//Solution 1: TC = O(2N)
+//Solution 1: TC = O(2N * 26)
 class Solution {
     public int characterReplacement(String s, int k) {
         int[] freq = new int[26];
