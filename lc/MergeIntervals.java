@@ -1,36 +1,27 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a,b) -> (a[0]-b[0]));
-        ArrayList<Integer[]> list = new ArrayList<>();
-        boolean newSet = true;
-        int min = intervals[0][0];
-        int max = intervals[0][1];
-        for (int i = 1; i < intervals.length; i++) {
-            boolean merge = true;
-            if (intervals[i][0] <= max) {
-                max = Math.max(intervals[i][1], max);
+        Arrays.sort(intervals, (a, b) -> (a[0] - b[0])); //sort by start time
+        int time = -1;
+        List<Integer[]> list = new ArrayList<>();
+        for (int i = 0; i < intervals.length; i++) {
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+            if (start > time) {
+                //new non-overlapping interval
+                list.add(new Integer[]{start, end});
             } else {
-                //no merge
-                merge = false;
+                //overlapping. Hence merge with last element
+                int index = list.size() - 1; //last element
+                end = Math.max(list.get(index)[1], end);
+                list.get(index)[1] = end;
             }
-            
-            if (!merge) {
-                Integer[] element = {min, max};
-                list.add(element);
-                
-                min = intervals[i][0];
-                max = intervals[i][1];
-            }
+            time = end;
         }
-        
-        Integer[] element = {min, max};
-        list.add(element);   
-        
-        int[][] res = new int[list.size()][2];
-        for (int k = 0; k < list.size(); k++) {
-            res[k][0] = list.get(k)[0];
-            res[k][1] = list.get(k)[1];
+        int[][] ans = new int[list.size()][2];
+        for (int i = 0; i < list.size(); i++) {
+            ans[i][0] = list.get(i)[0];
+            ans[i][1] = list.get(i)[1];
         }
-        return res;
+        return ans;
     }
 }
