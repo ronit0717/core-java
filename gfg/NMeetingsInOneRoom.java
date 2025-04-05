@@ -1,5 +1,53 @@
 // Link: https://www.geeksforgeeks.org/find-maximum-meetings-in-one-room/
 
+/* Solution 2: Cleaner Code */
+class Meet implements Comparable<Meet> {
+    int id;
+    int start;
+    int end;
+    
+    Meet(int id, int start, int end) {
+        this.id = id;
+        this.start = start;
+        this.end  = end;
+    }
+    
+    @Override
+    public int compareTo(Meet meet) {
+        return this.end - meet.end; //ascending order
+    }
+}
+
+class Solution {
+    // Function to find the maximum number of meetings that can
+    // be performed in a meeting room.
+    public int maxMeetings(int start[], int end[]) {
+        // add your code here
+        List<Meet> meets = buildMeet(start, end);
+        int currEnd = -1;
+        int count = 0;
+        for (Meet m : meets) {
+            if (m.start <= currEnd) {
+                continue;
+            }
+            count++;
+            currEnd = m.end;
+        }
+        return count;
+    }
+    
+    private List<Meet> buildMeet(int[] start, int[] end) {
+        int n = start.length;
+        List<Meet> list = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            Meet m = new Meet(i, start[i], end[i]);
+            list.add(m);
+        }
+        Collections.sort(list);
+        return list;
+    }
+}
+
 /* Greedy approach, TC = O(NLogN) --to sort, SC = O(N)
 Algo:
 Sort the input in ascending order of end time
