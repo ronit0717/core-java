@@ -1,5 +1,77 @@
 //Link: https://www.geeksforgeeks.org/job-sequencing-problem/
 
+/* Solution 3 More readable Soltion
+    TC = O(NLogN) + O(N*MaxDeadline)
+*/
+class Job implements Comparable<Job> {
+    int id;
+    int deadline;
+    int profit;
+    
+    Job(int id, int deadline, int profit) {
+        this.id  = id;
+        this.deadline = deadline;
+        this.profit = profit;
+    }
+    
+    @Override
+    public int compareTo(Job j) {
+        return j.profit - this.profit; //descending order
+    }
+}
+
+class Solution {
+
+    public ArrayList<Integer> jobSequencing(int[] deadline, int[] profit) {
+        // code here
+        List<Job> jobList = buildJobList(deadline, profit);
+        int[] slot = buildSlot(deadline);
+        int maxProfit = 0;
+        int count = 0;
+        for (Job job : jobList) {
+            int dl = job.deadline;
+            for (int i = dl - 1; i >= 0; i--) {
+                if (slot[i] == -1) {
+                    slot[i] = job.id;
+                    maxProfit += job.profit;
+                    count++;
+                    break;
+                }
+            }
+            if (count == slot.length) {
+                break; //no more slots left
+            }
+        }
+        ArrayList ans = new ArrayList<>(2);
+        ans.add(count);
+        ans.add(maxProfit);
+        return ans;
+        
+    }
+    
+    private int[] buildSlot(int[] deadline) {
+        int maxDeadline = 1;
+        for (int i = 0; i < deadline.length; i++) {
+            maxDeadline = Math.max(maxDeadline, deadline[i]);
+        }
+        int[] slot = new int[maxDeadline];
+        for (int i = 0; i < maxDeadline; i++) {
+            slot[i] = -1;
+        }
+        return slot;
+    }
+    
+    private List<Job> buildJobList(int[] deadline, int[] profit) {
+        List<Job> list = new ArrayList<>(deadline.length);
+        for (int i = 0; i < deadline.length; i++) {
+            Job job = new Job(i, deadline[i], profit[i]);
+            list.add(job);
+        }
+        Collections.sort(list);
+        return list;
+    }
+}
+
 /* Solution 2: TC = O(NLogN * x), where x is max deadline
 SC = O(x), where x is max deadline
 Sort the array in descending order of profit
