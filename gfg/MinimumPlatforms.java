@@ -1,6 +1,32 @@
 //https://www.geeksforgeeks.org/minimum-number-platforms-required-railwaybus-station/
 
-//Solution 2: TC = O(NLogN), SC = O(1)
+//Solution 3 (Cleaner code): TC =  O(NLogN) + O(2N), SC = O(1)
+class Solution {
+    // Function to find the minimum number of platforms required at the
+    // railway station such that no train waits.
+    static int findPlatform(int arr[], int dep[]) {
+        // add your code here
+        Arrays.sort(arr);
+        Arrays.sort(dep);
+        int i = 0;
+        int j = 0;
+        int maxCount = 0;
+        int count = 0;
+        while(i < arr.length && j < dep.length) {
+            if (arr[i] <= dep[j]) {
+                count++;
+                i++;
+            } else {
+                count--;
+                j++;
+            }
+            maxCount = Math.max(count, maxCount);
+        }
+        return maxCount;
+    }
+}
+
+//Solution 2: TC = O(NLogN) + O(2N), SC = O(1)
 /*
 Sort both arrival and departure arrays
 Iterate the arrival array, now if the arrival[i] <= departure[j], this implies that
