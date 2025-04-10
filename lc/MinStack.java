@@ -74,15 +74,6 @@ class MinStack {
     }
 }
 
-/**
- * Your MinStack object will be instantiated and called as such:
- * MinStack obj = new MinStack();
- * obj.push(val);
- * obj.pop();
- * int param_3 = obj.top();
- * int param_4 = obj.getMin();
- */
-
 /*
 Solution 1: To store a stack with a node, node has two elements : value and min
 
@@ -96,26 +87,20 @@ TC = O(1)
 
 class MinStack {
 
-    /** initialize your data structure here. */
-    class Node {
-        int value;
-        int min;
-        
-        Node(int val, int min) {
-            this.value = val;
-            this.min = min;
-        }
-    }
-    
-    Stack<Node> st;
+    private Stack<Integer[]> st;
+
     public MinStack() {
         st = new Stack<>();
     }
     
     public void push(int val) {
-        int min = st.isEmpty() ? val : Math.min(st.peek().min, val);
-        Node n = new Node(val, min);
-        st.push(n);
+        int min;
+        if (st.isEmpty()) {
+            min = val;
+        } else {
+            min = Math.min(st.peek()[1], val);
+        }
+        st.push(new Integer[]{val, min});
     }
     
     public void pop() {
@@ -123,13 +108,11 @@ class MinStack {
     }
     
     public int top() {
-        Node n = st.peek();
-        return n.value;
+        return st.peek()[0];
     }
     
     public int getMin() {
-        Node n = st.peek();
-        return n.min;
+        return st.peek()[1];
     }
 }
 
