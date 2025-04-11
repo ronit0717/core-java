@@ -11,6 +11,7 @@ Algo:
 3. return sum
 
 Intuition: 
+At every point we need either the leftMax or the rightMax. (we need the min of leftMax and rightMax)
 Condition in line 2.1 is satisfied only when there is a guarantee that there is a 
 pillar in right with height greater than current height, hence water will be stored for sure
 
@@ -20,29 +21,28 @@ pillar in left with height greater than current height, hence water will be stor
 class Solution {
     public int trap(int[] height) {
         int left = 0;
-        int leftMax = 0;
         int right = height.length - 1;
+        int leftMax = 0;
         int rightMax = 0;
-        
-        int sum = 0;
-        while (left <= right) {
+        int water = 0;
+        while(left != right) {
             if (height[left] <= height[right]) {
-                if (height[left] > leftMax) {
-                    leftMax = height[left];
+                if (height[left] < leftMax) {
+                    water += leftMax - height[left];
                 } else {
-                    sum += (leftMax - height[left]);
+                    leftMax = height[left];
                 }
                 left++;
             } else {
-                if (height[right] > rightMax) {
-                    rightMax = height[right];
+                if (rightMax > height[right]) {
+                    water += rightMax - height[right];
                 } else {
-                    sum += (rightMax - height[right]);
+                    rightMax = height[right];
                 }
                 right--;
             }
         }
-        return sum;
+        return water;
     }
 }
 
