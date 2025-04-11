@@ -1,3 +1,20 @@
+//Solution 2: Cleaner solution
+public class Solution {
+    public ArrayList<Integer> prevSmaller(ArrayList<Integer> A) {
+        ArrayList<Integer> nse = new ArrayList<>(A.size());
+        Stack<Integer> st = new Stack<>();
+        for (int i = 0; i < A.size(); i++) {
+            while(!st.isEmpty() && st.peek() >= A.get(i)) {
+                st.pop();
+            }
+            nse.add(st.isEmpty() ? - 1 : st.peek());
+            st.push(A.get(i));
+        }
+        return nse;
+    }
+}
+
+//Solution 1
 import java.util.ArrayList;
 
 //Link: https://www.interviewbit.com/problems/nearest-smaller-element/
