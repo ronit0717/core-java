@@ -1,9 +1,19 @@
+<<<<<<< HEAD
+=======
+
+//Solution 1
+>>>>>>> f62f53b6124400446811d35fd587d5843ea39e8b
 class Solution {
     public int sumSubarrayMins(int[] arr) {
         int large = 1000000007;
         int n = arr.length;
+<<<<<<< HEAD
         int nse[] = new int[n];
         int pse[] = new int[n];
+=======
+        int nse[] = new int[n]; //next smaller element
+        int pse[] = new int[n]; //previous smaller or equal element
+>>>>>>> f62f53b6124400446811d35fd587d5843ea39e8b
         for (int i = 0; i < n; i++) {
             nse[i] = n;
             pse[i] = -1;
@@ -20,6 +30,10 @@ class Solution {
             st.push(new Integer[]{arr[i], i});
         }
 
+<<<<<<< HEAD
+=======
+        //empty stack
+>>>>>>> f62f53b6124400446811d35fd587d5843ea39e8b
         st = new Stack<>();
 
         for (int i = 0; i < n; i++) {
