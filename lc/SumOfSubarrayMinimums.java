@@ -30,10 +30,6 @@ class Solution {
             st.push(new Integer[]{arr[i], i});
         }
 
-<<<<<<< HEAD
-=======
-        //empty stack
->>>>>>> f62f53b6124400446811d35fd587d5843ea39e8b
         st = new Stack<>();
 
         for (int i = 0; i < n; i++) {
