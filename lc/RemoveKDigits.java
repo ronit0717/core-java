@@ -7,10 +7,6 @@ class Solution {
         st.push(num.charAt(0));
         int count = 0;
         for (int i = 1; i < num.length(); i++) {
-            if (count == k) {
-                st.push(num.charAt(i));
-                continue;
-            }
             while(!st.isEmpty() && st.peek() > num.charAt(i) & count < k) {
                 count++;
                 st.pop();
