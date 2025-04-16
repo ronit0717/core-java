@@ -1,3 +1,5 @@
+//Problem Link: https://www.geeksforgeeks.org/problems/the-celebrity-problem/1
+
 //Solution 2: Two pointer approach
 class Solution {
     public int celebrity(int mat[][]) {
