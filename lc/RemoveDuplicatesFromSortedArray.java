@@ -4,16 +4,16 @@ TC  = O(N), SC = O(1)
 
 class Solution {
     public int removeDuplicates(int[] nums) {
-        if (nums.length <= 1) {
-            return nums.length;
-        }
-        int pos = 0;
-        for (int i = 1; i < nums.length; i++) {
-            if (nums[pos] != nums[i]) {
-                nums[++pos] = nums[i];
+        int i = 0;
+        int j = 1;
+        while(j < nums.length) {
+            if (nums[j] > nums[i]) {
+                i++;
+                nums[i] = nums[j];
             }
+            j++;
         }
-        return ++pos;
+        return i + 1;
     }
 }
 
