@@ -1,5 +1,3 @@
-//Solution 2: Optimized solution (TC = O(N), SC=O(1))
-
 /*
 Algo:
 1. Find i from behind such that a[i] < a[i+1]. If there is no such i, skip step 2 and 3
@@ -25,6 +23,51 @@ Intuition: My target is to find the next greater number that can be formed with 
 numers 1,2,3 and 4
 */
 
+
+//Solution 3: Cleaner code
+class Solution {
+    public void nextPermutation(int[] nums) {
+        
+        int n = nums.length;
+        //find the index where it dips from behind
+        int index = -1;
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) { //no dip, means last permuation (all decreasing)
+            reverse(0, n - 1, nums); //gives first permuation, all increasing
+            return;
+        }
+
+        //swap
+        for (int i = n - 1; i > index; i--) {
+            if (nums[i] > nums[index]) {
+                int temp = nums[index];
+                nums[index] = nums[i];
+                nums[i] = temp;
+                break;
+            }
+        }
+
+        //reverse from index + 1 to n - 1, to get the smallest number, before revese it will be in decreasing order
+        reverse(index + 1, n - 1, nums);
+    }
+
+    private void reverse(int start, int end, int[] nums) {
+        while (start < end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+    }
+}
+
+//Solution 2: Optimized solution (TC = O(N), SC=O(1))
 
 //code
 class Solution {
