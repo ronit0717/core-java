@@ -6,85 +6,79 @@ for all i from 0 to n-2, two pointers start and end, such that condition is met
 */
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 2; i++) {
-            if (i != 0 && nums[i-1] == nums[i]) {
+        int n = nums.length;
+        List<List<Integer>> ansList = new LinkedList<>();
+        for (int i = 0; i < n - 2; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            int target = -1 * nums[i];
-            int start = i + 1;
-            int end = nums.length - 1;
-            while (start < end) {
-                int sum = nums[start] + nums[end];
-                if (target == sum) {
-                    List<Integer> list = new ArrayList<>();
+            int j = i + 1;
+            int k = n - 1;
+            while (j < k) {
+                int sum = nums[i] + nums[j] + nums[k];
+                if (sum == 0) {
+                    List<Integer> list = new ArrayList<>(3);
                     list.add(nums[i]);
-                    list.add(nums[start]);
-                    list.add(nums[end]);
-                    res.add(list);
-                    start++;
-                    end--;
-                    while (start < nums.length && end >= 0 && nums[start] == nums[start - 1] && nums[end] == nums[end + 1]) {
-                        start++;
-                        end--;
-                    } 
-                } else if (target < sum) {
-                    end = decrementEnd(nums, end);
+                    list.add(nums[j]);
+                    list.add(nums[k]);
+                    ansList.add(list);
+                    j = incrementJ(nums, j);
+                    k = decrementK(nums, k);
+                } else if (sum > 0) {
+                    k = decrementK(nums, k);
                 } else {
-                    start = incrementStart(nums, start);
+                    j = incrementJ(nums, j);
                 }
             }
         }
-        return res;
+        return ansList;
     }
-    
-    private int incrementStart(int[] nums, int start) {
-        start++;
-        while (start < nums.length && nums[start] == nums[start - 1]) {
-            start++;
+
+    private int incrementJ(int[] nums, int j) {
+        j++;
+        while(j < nums.length && nums[j] == nums[j - 1]) {
+            j++;
+        } 
+        return j;
+    } 
+
+    private int decrementK(int[] nums, int k) {
+        k--;
+        while(k >= 0 && nums[k] == nums[k + 1]) {
+            k--;
         }
-        return start;
-    }
-    
-    private int decrementEnd(int[] nums, int end) {
-        end--;
-        while (end >= 0 && nums[end] == nums[end + 1]) {
-            end--;
-        }
-        return end;
+        return k;
     }
 }
 
 //Solution 1: Using HashMap, TC = O(N^2), SC = O(N)
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        HashMap<Integer, Integer> map = new HashMap<>();
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
-        
-        for (int i = 0; i < nums.length - 2; i++) {
-            if (i != 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            for (int j = i + 1; j < nums.length - 1; j++) {
-                if (j != (i + 1) && nums[j] == nums[j - 1]) {
-                    continue;
-                }
-                int target = -1 * (nums[i] + nums[j]);
-                if (map.containsKey(target) && map.get(target) > j) {
-                    List<Integer> list = new ArrayList<>();
+        Set<List<Integer>> ansSet = new HashSet<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            Set<Integer> set = new HashSet<>();
+            for (int j = i + 1; j < n; j++) {
+                int sum = nums[i] + nums[j];
+                int complement = -1 * sum;
+                if (set.contains(complement)) {
+                    List<Integer> list = new ArrayList<>(3);
                     list.add(nums[i]);
                     list.add(nums[j]);
-                    list.add(target);
-                    res.add(list);
+                    list.add(complement);
+                    Collections.sort(list);
+                    ansSet.add(list);
                 }
+                set.add(nums[j]);
             }
         }
-        return res;
+
+        List<List<Integer>> ansList = new ArrayList<>(ansSet.size());
+        for (List<Integer> list : ansSet) {
+            ansList.add(list);
+        }
+        return ansList;
     }
 }
 
