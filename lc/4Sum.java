@@ -9,145 +9,97 @@ Algo:
     4.3. Else => Descrement end, such that no duplicates
 
 */
-
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> res = new LinkedList<>();
-        if (nums.length < 4) {
-            return res;
-        }
         Arrays.sort(nums);
-        
-        int prevI = -1;
-        int prevJ = -1;
-        
-        for (int i = 0; i < nums.length - 3; i++) {
-            if (i != 0 && prevI == nums[i]) { //this will avoid duplicate set
+        int n = nums.length;
+        List<List<Integer>> ansList = new LinkedList<>();
+        for (int i = 0; i < n - 3; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
-            
-            for (int j = i + 1; j < nums.length - 2; j++) {
-                if (j != (i + 1) && prevJ == nums[j]) { //this will avoid duplicate set
+            for (int j = i + 1; j < n - 2; j++) {
+                if (j != (i + 1) && nums[j] == nums[j - 1]) {
                     continue;
                 }
-                
-                int start = j + 1;
-                int end = nums.length - 1;
-                
-                while (start < end) {
-                    int val = target - nums[i] - nums[j] - nums[start] - nums[end];
-                    if (val == 0) {
-                        addSet(res, nums[i], nums[j], nums[start], nums[end]);
-                        start = getNextStart(nums, start);
-                        end = getNextEnd(nums, end, j);
-                    } else if (val > 0) {
-                        start = getNextStart(nums, start);
+
+                int p = j + 1;
+                int q = n - 1;
+                while(p < q) {
+                    long sum = nums[i] + nums[j];
+                    sum += nums[p];
+                    sum += nums[q];
+                    if (sum == target) {
+                        ansList.add(buildList(nums[i], nums[j], nums[p], nums[q]));
+                        p = incrementP(nums, p);
+                        q = decrementQ(nums, q);
+                    } else if (sum > target) {
+                        q = decrementQ(nums, q);
                     } else {
-                        end = getNextEnd(nums, end, j);
+                        p = incrementP(nums, p);
                     }
                 }
-                
-                prevJ = nums[j];
             }
-            
-            prevI = nums[i];
         }
-        return res;
+        return ansList;
     }
-    
-    private int getNextStart(int[] nums, int currStart) {
-        int newStart = currStart + 1;
-        while (newStart < nums.length && nums[newStart] == nums[currStart]) {
-            newStart++;
+
+    private int incrementP(int[] nums, int p) {
+        p++;
+        while(p < nums.length && nums[p] == nums[p - 1]) {
+            p++;
         }
-        return newStart;
+        return p;
     }
-    
-    private int getNextEnd(int[] nums, int currEnd, int j) {
-        int newEnd = currEnd - 1;
-        while (newEnd >= j && nums[newEnd] == nums[currEnd]) {
-            newEnd--;
+
+    private int decrementQ(int[] nums, int q) {
+        q--;
+        while(q >= 0 && nums[q] == nums[q + 1]) {
+            q--;
         }
-        return newEnd;
+        return q;
     }
-    
-    private void addSet(List<List<Integer>> res, int i, int j, int k, int l) {
-        List<Integer> list = new LinkedList<>();
-        list.add(i);
-        list.add(j);
-        list.add(k);
-        list.add(l);
-        res.add(list);
+
+    private List<Integer> buildList(int a, int b, int c, int d) {
+        List<Integer> list = new ArrayList<>(4);
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        list.add(d);
+        return list;
     }
 }
 
-/*******************************************************************************************************************************************************************/
-
-/* Solution 1, TC = N^3(LogN), SC = O(1)
-Algo:
-1. Sort the array
-2. Select three pointers i, j and k and use nested loop, Increment the pointers in such a way to avoid duplicates (all duplicates will be adjacent)
-3. Once we have i, j and k, we know the fourth number should be => val = target - nums[i] - nums[j] - nums[k]
-4. Search the val in the right of k with binary search approach
-*/
-
+//Solution 1 (TC = O(N^3) * LogM for the set)
 class Solution {
     public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> res = new LinkedList<>();
-        if (nums.length < 4) {
-            return res;
-        }
-        Arrays.sort(nums);
-        int prevI = -1;
-        int prevJ = -1;
-        int prevK = -1;
-        for (int i = 0; i < nums.length - 3; i++) {
-            if (i != 0 && prevI == nums[i]) { //this will avoid duplicate set
-                continue;
-            }
-            
-            for (int j = i + 1; j < nums.length - 2; j++) {
-                if (j != (i + 1) && prevJ == nums[j]) { //this will avoid duplicate set
-                    continue;
-                }
-                
-                for (int k = j + 1; k < nums.length - 1; k++) {
-                    if (k != (j + 1) && prevK == nums[k]) { //this will avoid duplicate set
-                        continue;
+        Set<List<Integer>> ansSet = new HashSet<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                Set<Long> set = new HashSet<>();
+                for (int k = j + 1; k < n; k++) {
+                    long sum = nums[i] + nums[j];
+                    sum += nums[k];
+                    long complement = target - sum;
+                    if (set.contains(complement)) {
+                        List<Integer> list = new ArrayList<>(4);
+                        list.add(nums[i]);
+                        list.add(nums[j]);
+                        list.add((int)complement);
+                        list.add(nums[k]);
+                        Collections.sort(list);
+                        ansSet.add(list);
                     }
-                    int val = target - nums[i] - nums[j] - nums[k];
-                    //binary search val
-                    int start = k + 1;
-                    int end = nums.length - 1;
-                    while (start <= end) {
-                        int mid = (start + end)/2;
-                        if (val == nums[mid]) {
-                            addSet(res, nums[i], nums[j], nums[k], nums[mid]);
-                            break;
-                        } else if (val > nums[mid]) {
-                            start = mid+1;
-                        } else {
-                            end = mid-1;
-                        }
-                    }
-                    
-                    prevK = nums[k];
-                }
-                
-                prevJ = nums[j];
+                    set.add((long)nums[k]);                }
             }
-            
-            prevI = nums[i];
         }
-        return res;
-    }
-    
-    private void addSet(List<List<Integer>> res, int i, int j, int k, int l) {
-        List<Integer> list = new LinkedList<>();
-        list.add(i);
-        list.add(j);
-        list.add(k);
-        list.add(l);
-        res.add(list);
+        List<List<Integer>> ansList = new ArrayList<>(ansSet.size());
+        for (List<Integer> list : ansSet) {
+            ansList.add(list);
+        }
+        return ansList;
     }
 }
+
+//Solution 0: Brute Force => 4 nested loops
