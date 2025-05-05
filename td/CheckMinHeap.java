@@ -28,6 +28,7 @@ Explanation: The input is not a min-heap, as it violate the heap property.
 
 */
 
+//Solution 1: Recursive Solution
 class Solution
 {
 	public static boolean checkMinHeap(int[] nums)
@@ -54,5 +55,30 @@ class Solution
 			return false;
 		}
 		return check(nums, leftIndex) && check(nums, rightIndex);
+	}
+}
+
+//Solution 2: Iterative solution
+class Solution
+{
+	public static boolean checkMinHeap(int[] nums)
+	{
+		// Write your code here...
+		int n = nums.length;
+		if (n == 0) {
+			return true;
+		}
+		for (int i = 0; i <= n/2; i++) {
+			int leftIndex = 2 * i + 1;
+			int rightIndex = 2 * i + 2;
+			int leftVal = (leftIndex >= n) ? Integer.MAX_VALUE : nums[leftIndex];
+			int rightVal = (rightIndex >= n) ? Integer.MAX_VALUE : nums[rightIndex];
+			int val = nums[i];
+			if (leftVal < val || rightVal < val) {
+				return false;
+			}
+		}
+		return true;
+		
 	}
 }
