@@ -1,70 +1,87 @@
-/* Solution 1 (Priority Queue - Lambda Comparator) */
+/* Solution 3 (Bucket Sort) TC ~ O(N) */
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        int res[] = new int[k];
-        PriorityQueue<Map.Entry<Integer, Integer>> pq = 
-            new PriorityQueue<>((a, b) -> (b.getValue() - a.getValue()));
-        
-        HashMap<Integer, Integer> map = new HashMap<>();
-        HashMap<Integer, List<Integer>> freqMap = new HashMap<>();
+        LinkedList<Integer>[] bucket = new LinkedList[nums.length + 1]; //at max freq can be equal to N
+        Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            int count = 1;
-            if (map.containsKey(nums[i])) {
-                count += map.get(nums[i]);
-            }
+            int count = map.getOrDefault(nums[i], 0);
+            count++;
             map.put(nums[i], count);
         }
-        for (Map.Entry<Integer, Integer> set : map.entrySet()) {
-            pq.add(set);
-        }
-        int count = 0;
-        while (count < k) {
-            Map.Entry<Integer, Integer> set = pq.poll();
-            res[count++] = set.getKey();
-        }
-        return res;
-    }
-}
-
-
-/* Solution 0 (Priority Queue) */
-
-class Solution {
-    public int[] topKFrequent(int[] nums, int k) {
-        int res[] = new int[k];
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
-        HashMap<Integer, Integer> map = new HashMap<>();
-        HashMap<Integer, List<Integer>> freqMap = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            int count = 1;
-            if (map.containsKey(nums[i])) {
-                count += map.get(nums[i]);
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int num = entry.getKey();
+            int count = entry.getValue();
+            if (bucket[count] == null) {
+                bucket[count] = new LinkedList<>();
             }
-            map.put(nums[i], count);
+            bucket[count].add(num);
         }
-        int count = 0;
-        for (Map.Entry<Integer, Integer> set : map.entrySet()) {
-            List<Integer> list;
-            if (freqMap.containsKey(set.getValue())) {
-                 list = freqMap.get(set.getValue());
-            } else {
-                pq.add(set.getValue());
-                list = new ArrayList<Integer>();
+        int[] ans = new int[k];
+        int index = 0;
+        for (int i = nums.length; i >= 0; i--) {
+            List<Integer> cands = bucket[i];
+            if (cands == null) {
+                continue;
             }
-            list.add(set.getKey());
-            freqMap.put(set.getValue(), list);
-        }
-        count = 0;
-        while (count < k) {
-            List<Integer> list = freqMap.get(pq.poll());
-            for (Integer i : list) {
-                res[count] = i;
-                count++;
-                if (count == k) {
-                    break;
+            for (Integer cand : cands) {
+                ans[index] = cand;
+                index++;
+                if (index == k) {
+                    return ans;
                 }
             }
         }
-        return res;
+        return ans;
+    }
+}
+
+/* Solution 2 (PQ Min Heap) TC = O(NLogK) */
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>((a , b) -> (a[1] - b[1])); //min heap
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int count = freq.getOrDefault(nums[i], 0);
+            count++;
+            freq.put(nums[i], count);
+        }
+        for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {
+            int key = entry.getKey();
+            int value = entry.getValue();
+            if (pq.size() < k) {
+                pq.add(new Integer[]{key, value});
+            } else if (pq.size() == k && pq.peek()[1] < value) {
+                pq.poll();
+                pq.add(new Integer[]{key, value});
+            }
+        }
+        int[] ans = new int[k];
+        for (int i = 0; i < k; i++) {
+            ans[i] = pq.poll()[0];
+        }
+        return ans;
+    }
+}
+
+/* Solution 1 (Priority Queue - Max Heap) TC = O(NLogN) */
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        PriorityQueue<Integer[]> pq = new PriorityQueue<>((a,b) -> (b[1] - a[1])); //max heap
+        Map<Integer, Integer> freq = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int count = freq.getOrDefault(nums[i], 0);
+            count++;
+            freq.put(nums[i], count);
+        }
+        for (Map.Entry<Integer, Integer> entry : freq.entrySet()) {
+            int key = entry.getKey();
+            int value = entry.getValue();
+            pq.add(new Integer[]{key, value});
+        }
+        int[] ans = new int[k];
+        for (int i = 0; i < k; i++) {
+            ans[i] = pq.poll()[0];
+        }
+        return ans;
     }
 }
