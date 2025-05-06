@@ -1,4 +1,4 @@
-/* Solution 3: Using partition algorithm of quikr sort
+/* Solution 3: Using partition algorithm of quick sort
 Worst case = O(n^2), but average case fastest = O(NLogN)
 
 Intuition: In partition algorithm, for each iteration the pivot element reaches
@@ -12,29 +12,47 @@ class Solution {
     public int findKthLargest(int[] nums, int k) {
         int start = 0;
         int end = nums.length - 1;
-        boolean done = false;
-        while (!done) {
-            int pivot = start;
-            for (int i = start; i <= end; i++) {
-                if (nums[i] <= nums[end]) {
-                    //swap
-                    int temp = nums[pivot];
-                    nums[pivot] = nums[i];
-                    nums[i] = temp;
-                    pivot++;
-                }
-            }
-            pivot--; //note that pivot gets increase one extra time, hence reducing it
-            if (pivot == (nums.length - k)) {
-                return nums[pivot];
-            } else if (pivot < (nums.length - k)) {
-                start = pivot + 1;
+        int ans = -1;
+        while(true) {
+            int index = quickSort(nums, start, end);
+            if (index == (k - 1)) {
+                ans = nums[index];
+                break;
+            } else if (index >= k) {
+                end = index - 1;
             } else {
-                end = pivot - 1;
+                start = index + 1;
             }
-            
         }
-        return -1;
+        return ans;
+    }
+
+    //returns the partition index
+    private int quickSort(int[] nums, int start, int end) {
+        int pivot = nums[start];
+        int left = start + 1;
+        int right = end;
+        while(left <= right) {
+            if (nums[left] < pivot && nums[right] > pivot) {
+                //swap
+                int temp = nums[left];
+                nums[left] = nums[right];
+                nums[right] = temp;
+                left++;
+                right--;
+                continue;
+            }
+            if (nums[left] >= pivot) {
+                left++;
+            }
+            if (nums[right] <= pivot) {
+                right--;
+            }
+        }
+        //swap pivot element with element in right index
+        nums[start] = nums[right];
+        nums[right] = pivot;
+        return right;
     }
 }
 
@@ -51,6 +69,38 @@ class Solution {
             }
         }
         return pq.remove();
+    }
+}
+
+
+//Solution 2.2 (Max Heap)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> (b - a));
+        for (int i = 0; i < nums.length; i++) {
+            pq.add(nums[i]);
+        }
+        for (int i = 1; i < k; i++) {
+            pq.poll();
+        }
+        return pq.peek();
+    }
+}
+
+//Solution 2.3 (Min Heap) => TC = O(KLogK) + O((N-K)(LogK)) = O(NLogK)
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int i = 0; i < k; i++) {
+            pq.add(nums[i]);
+        }
+        for (int i = k; i < nums.length; i++) {
+            if (nums[i] > pq.peek()) {
+                pq.poll();
+                pq.add(nums[i]);
+            }
+        }
+        return pq.peek();
     }
 }
 
