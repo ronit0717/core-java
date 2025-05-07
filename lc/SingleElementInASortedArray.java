@@ -18,38 +18,37 @@ And vice versa for right side
 */
 class Solution {
     public int singleNonDuplicate(int[] nums) {
-        if (nums.length == 1) {
+        int n = nums.length;
+        if (n == 1) {
             return nums[0];
         }
-        int min = 0;
-        int max = nums.length - 1;
-        int mid = -1;
-        while (min <= max) {
-            mid = (min + max) / 2;
-            if ( (mid != 0 && mid != (nums.length - 1) && nums[mid - 1] != nums[mid] && nums[mid] != nums[mid + 1]) 
-                || (mid == 0 && nums[mid + 1] != nums[mid]) 
-                || (mid == (nums.length - 1) && nums[mid - 1] != nums[mid])
-               ) {
+        int start = 0;
+        int end = n - 1;
+        
+        while(start <= end) {
+            int mid = (start + end) / 2;
+            if ((mid == 0 && nums[mid + 1] != nums[mid]) 
+                || (mid == (n - 1) && nums[mid] != nums[mid - 1])
+                || (nums[mid] != nums[mid - 1] && nums[mid] != nums[mid + 1])
+            ) {
                 return nums[mid];
             }
-            if (mid == 0) {
-                min = mid + 2;
-            } else if (mid == (nums.length - 1)) {
-                max = mid - 2;
-            } else if ( (mid % 2 == 0) && (nums[mid - 1] == nums[mid]) ) {
-                max = mid - 2; //our answer lies in the left fragment
-            } else if ( (mid % 2 != 0) && (nums[mid + 1] == nums[mid]) ) {
-                max = mid - 1; //our answer lies in the left fragment
-            } else if ( nums[mid + 1] == nums[mid] ) {
-                min = mid + 2; //our answer lies in the right fragment
+            if (mid != (n - 1) && nums[mid] == nums[mid + 1]) {
+                mid = mid + 1;
+            }
+            int leftLength = mid + 1;
+            int rightLength = n - mid - 1;
+            if (leftLength % 2 == 1) {
+                //number lies in left
+                end = mid - 2; //removed the duplicates
             } else {
-                min = mid + 1; //our answer lies in the right fragment
+                //number lies in right
+                start = mid + 1;
             }
         }
-        return mid;
-    }
+        return -1;
+    } 
 }
-
 
 /* Solution 2, using xor TC = O(N) */
 class Solution {
