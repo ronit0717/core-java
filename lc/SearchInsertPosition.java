@@ -1,4 +1,4 @@
-//Solution 2: TC = O(Lo)
+//Solution 2: TC = O(LogN)
 class Solution {
     public int searchInsert(int[] nums, int target) {
         int start = 0;
