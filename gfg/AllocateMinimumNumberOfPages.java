@@ -21,7 +21,7 @@ class Solution {
             if (count > k) {
                 min = mid + 1;
             } else {
-                ans = mid;
+                ans = mid; //if count < k, then also we can distribute the books to all the students, since 'mid' is the max page which can be allocated
                 max = mid - 1; //in search for a better answer
             }
         }
