@@ -17,47 +17,40 @@ https://github.com/ronit0717/core-java/blob/master/lc/MedianOfTwoSortedArrays.ja
 */
 
 class Solution {
-    public long kthElement( int arr1[], int arr2[], int n, int m, int k) {
-        if (m < n) {
-            return kthElement(arr2, arr1, m, n, k);
+    public int kthElement(int a[], int b[], int k) {
+        // code here
+        if (a.length < b.length) {
+            return util(a, b, k);
         }
-        int start = 0;
-        int end = Math.min(n, k) - 1; //it should be the minimum of n and k, else if k < n
-                                      //else it may happen that we are taking length greater than k
-        int mid1 = 0, mid2 = 0;
-        
-        while (start <= end) {
-            mid1 = (start + end) / 2;
-            mid2 = k - mid1 - 2;
-            
-            if (mid2 >= m) { //insufficient length
-                start = mid1 + 1;
+        return util(b, a, k);
+    }
+    
+    private int util(int a[], int b[], int k) {
+        int min = 0;
+        int max = a.length;
+        while (min <= max) {
+            int mid = (min + max) / 2;
+            int leftLen1 = mid;
+            int leftLen2 = k - leftLen1;
+            if (leftLen2 < 0) {
+                max = mid - 1;
+                continue;
+            } else if (leftLen2 > b.length) {
+                min = mid + 1;
                 continue;
             }
-            
-            //check condition => range on mid1 and mid2 check followed by l1,r2 check and l2,r1 check
-            if ( (mid2 >= -1 && mid2 < (m - 1) && mid1 < n && mid1 >= 0) && (arr1[mid1] > arr2[mid2 + 1]) ) {
-                end = mid1 - 1;
-                continue;
+            int left1 = (leftLen1 == 0) ? Integer.MIN_VALUE : a[leftLen1 - 1];
+            int left2 = (leftLen2 == 0) ? Integer.MIN_VALUE : b[leftLen2 - 1];
+            int right1 = (leftLen1 == a.length) ? Integer.MAX_VALUE : a[leftLen1];
+            int right2 = (leftLen2 == b.length) ? Integer.MAX_VALUE : b[leftLen2];
+            if (left1 <= right2 && left2 <= right1) {
+                return Math.max(left1, left2);
+            } else if (left1 > right2) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
             }
-            
-            if ( (mid1 < (n - 1) && mid1 >= -1 && mid2 >= 0 && mid2 < m)  && (arr2[mid2] > arr1[mid1 + 1]) ) {
-                start = mid1 + 1;
-                continue;
-            }
-            
-            break; //this partition did not fail any condition, hence this partition will give us the solution
         }
-        
-        if (end < 0) {
-            mid1 = -1; //ie, we are not selecting any element from array1
-        }
-        
-        mid2 = k - mid1 - 2;
-        
-        int l1 = (mid1 >= 0 && mid1 < n) ? arr1[mid1] : Integer.MIN_VALUE;
-        int l2 = (mid2 >= 0 && mid2 < m) ? arr2[mid2] : Integer.MIN_VALUE;
-        
-        return (long)Math.max(l1, l2);
+        return 0; //never executed
     }
 }
