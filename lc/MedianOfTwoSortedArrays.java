@@ -16,56 +16,38 @@ https://github.com/ronit0717/core-java/blob/master/gfg/KthElementOfTwoSortedArra
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         if (nums1.length < nums2.length) {
-            return findMedianSortedArrays(nums2, nums1);
-        }
-        
-        int totalLength = nums1.length + nums2.length;
-        boolean evenCase = (totalLength) % 2 == 0 ? true : false;
-        
-        int leftSegLength = (evenCase) ? (totalLength / 2) : (totalLength / 2) + 1;//left segment length
-        
-        int start = 0;
-        int end = Math.min(nums1.length, leftSegLength) - 1;
-        int mid1 = 0, mid2 = 0;
-        
-        while (start <= end) {
-            mid1 = (start + end) / 2;
-            mid2 = leftSegLength - mid1 - 2;
-            
-            if (mid2 >= nums2.length) { //insufficient length of mid2
-                start  = mid1 + 1;
-                continue;
-            }
-            
-            //check condition => range on mid1 and mid2 check followed by l1,r2 check and l2,r1 check
-            if (mid2 < (nums2.length - 1) && nums1[mid1] > nums2[mid2 + 1]) { //l1 if greater than r2
-                end = mid1 - 1;
-                continue;
-            } 
-            
-            if (mid1 < (nums1.length - 1) && mid2 >= 0 && mid2 < (nums2.length) && nums2[mid2] > nums1[mid1 + 1]) { //l2 if greater than r1
-                start = mid1 + 1;
-                continue;
-            }
-            
-            break;
-        }
-        
-        if (end < 0) {
-            mid1 = -1; //ie, we are not selecting any element from nums1
-        }
-        mid2 = leftSegLength - mid1 - 2;
-        
-        int l1 = (mid1 >= 0 && mid1 < nums1.length) ? nums1[mid1] : Integer.MIN_VALUE;
-        int l2 = (mid2 >= 0 && mid2 < nums2.length) ? nums2[mid2] : Integer.MIN_VALUE;
-        int r1 = ( (mid1 + 1) >= 0 && (mid1 + 1) < nums1.length) ? nums1[mid1 + 1] : Integer.MAX_VALUE;
-        int r2 = ( (mid2 + 1) >= 0 && (mid2 + 1) < nums2.length) ? nums2[mid2 + 1] : Integer.MAX_VALUE;
-        
-        if (!evenCase) {
-            return (double)(Math.max(l1, l2));
+            return medianUtil(nums1, nums2);
         } else {
-            return (Math.max(l1, l2) + Math.min(r1, r2)) / 2.0;
+            return medianUtil(nums2, nums1);
         }
+    }
+
+    private double medianUtil(int[] nums1, int[] nums2) {
+        int min = 0;
+        int max = nums1.length;
+        int totalLen = nums1.length + nums2.length;
+        int leftLen = (totalLen + 1) / 2;
+        int leftMax = 0;
+        int rightMin = 0;
+        while (min <= max) {
+            int mid = (min + max) / 2;
+            int leftLen1 = mid;
+            int leftLen2 = leftLen - leftLen1;
+            int left1 = (leftLen1 == 0) ? Integer.MIN_VALUE : nums1[leftLen1 - 1];
+            int left2 = (leftLen2 == 0) ? Integer.MIN_VALUE : nums2[leftLen2 - 1];
+            int right1 = (leftLen1 == nums1.length) ? Integer.MAX_VALUE : nums1[leftLen1];
+            int right2 = (leftLen2 == nums2.length) ? Integer.MAX_VALUE : nums2[leftLen2];
+            if (left1 <= right2 && left2 <= right1) {
+                leftMax = Math.max(left1, left2);
+                rightMin = Math.min(right1, right2);
+                break;
+            } else if (left1 > right2) {
+                max = mid - 1;
+            } else {
+                min = mid + 1;
+            }
+        }
+        return (totalLen % 2 == 1) ? leftMax : (leftMax + rightMin) / 2d;
     }
 }
 
@@ -131,44 +113,108 @@ class Solution {
     }
 }
 
-/* Solution 1: By comparing the two arrays using two pointers, TC = O((M + N)/2), SC = O(1)
+/* Solution 1.2: By comparing the two arrays using two pointers, TC = O((M + N)/2), SC = O(1)
 find the required index
 if m + n -> odd => index = (m + n)/2
 if m + n -> even => indexes = (m + n)/2 and (m + n)/2 - 1 => average
 */
-
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-    	int totalLength = nums1.length + nums2.length;
-    	int mid = totalLength / 2;
-        boolean evenCase = (totalLength % 2 == 0) ? true : false;
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int len = len1 + len2;
+        int index1 = (len1 + len2 - 1) / 2;
+        int index2 = index1 + 1;
+        int num1 = 0;
+        int num2 = 0;
+        int k = 0;
+        int i = 0;
+        int j = 0;
+        int num = 0;
+        while (i < len1 && j < len2) {
+            if (nums1[i] < nums2[j]) {
+                num = nums1[i];
+                i++;
+            } else {
+                num = nums2[j];
+                j++;
+            }
+            if (k == index1) {
+                num1 = num;
+            } else if (k == index2) {
+                num2 = num;
+                return getMedian(len, num1, num2);
+            }
+            k++;
+        }
+        while(i < len1) {
+            num = nums1[i];
+            i++;
+            if (k == index1) {
+                num1 = num;
+            } else if (k == index2) {
+                num2 = num;
+                return getMedian(len, num1, num2);
+            }
+            k++;
+        }
+        while(j < len2) {
+            num = nums2[j];
+            j++;
+            if (k == index1) {
+                num1 = num;
+            } else if (k == index2) {
+                num2 = num;
+                return getMedian(len, num1, num2);
+            }
+            k++;
+        }
+        return getMedian(len, num1, num2);
+    }
+
+    private double getMedian(int len, int num1, int num2) {
+        if (len % 2 == 0) {
+            return (num1  + num2) / 2d;
+        }
+        return num1;
+    }
+}
+
+/* Solution 1.1: Using an extra array. TC = O(N + M), SC = O(N + M)*/
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int[] nums = new int[len1 + len2];
         int i = 0;
         int j = 0;
         int k = 0;
-        int sum = 0;
-        int val;
-        while (k <= mid) {
-        	if (nums1.length == 0 || i == nums1.length) {
-        		val = nums2[j];
-        		j++;
-        	} else if (nums2.length == 0 || j == nums2.length) {
-        		val = nums1[i];
-        		i++;
-        	} else {
-        		if (nums1[i] < nums2[j]) {
-        			val = nums1[i];
-        			i++;
-        		} else {
-        			val = nums2[j];
-        			j++;
-        		}
-        	}
-        	if ((k == (mid - 1) && evenCase) || (k == mid)) {
-        		sum += val;
-        	}
-        	k++;
+        while(i < len1 && j < len2) {
+            if (nums1[i] < nums2[j]) {
+                nums[k] = nums1[i];
+                i++;
+            } else {
+                nums[k] = nums2[j];
+                j++;
+            }
+            k++;
         }
-        double result = evenCase ? ((double) sum / 2.0) : sum;
-        return result;
+        while(i < len1) {
+            nums[k] = nums1[i];
+            i++;
+            k++;
+        }
+        while(j < len2) {
+            nums[k] = nums2[j];
+            j++;
+            k++;
+        }
+        int len = len1 + len2;
+        int mid = (len1 + len2) / 2;
+        if (len % 2 == 0) {
+            return (nums[mid] + nums[mid - 1]) / 2d; 
+        } else {
+            return nums[mid];
+        }
     }
 }
