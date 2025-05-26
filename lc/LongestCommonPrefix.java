@@ -1,3 +1,28 @@
+//Solution 3: Same time complexity as solution 2. More clean code
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        int len = 0;
+        boolean done = false;
+        for (int i = 0; i < strs[0].length(); i++) {
+            char c = strs[0].charAt(i);
+            for (int j = 1; j < strs.length; j++) {
+                if (i >= strs[j].length() || strs[j].charAt(i) != c) {
+                    done = true;
+                    break;
+                }
+            }
+            if (done) {
+                break;
+            }
+            len++;
+        }
+        if (len == 0) {
+            return "";
+        }
+        return strs[0].substring(0, len);
+    }
+}
+
 //Solution 2: TC = O(M*N), where M is length of prefix
 class Solution {
     public String longestCommonPrefix(String[] strs) {
