@@ -1,3 +1,33 @@
+//Solution 2: TC = O(M*N), where M is length of prefix
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        int index = 0;
+        boolean done = false;
+        while(true) {
+            if (index >= strs[0].length()) {
+                break;
+            }
+            char c = strs[0].charAt(index);
+            for (int i = 1; i < strs.length; i++) {
+                if (strs[i].length() <= index || strs[i].charAt(index) != c) {
+                    done = true;
+                    break;
+                }
+            }
+            if (done) {
+                break;
+            }
+            index++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < index; i++) {
+            sb.append(strs[0].charAt(i));
+        }
+        return sb.toString();
+    }
+} 
+
+//Solution 1: TC = O(NLogN + O(N*M)) -> M is length of smallest string
 class Solution {
     public String longestCommonPrefix(String[] strs) {
         Arrays.sort(strs, (a, b) -> (b.length() - a.length()));   //sort all strings in reverse of length
