@@ -12,118 +12,117 @@ Iterate from len = 1 to stringlength
 
 //Tabulation
 class Solution {
+
     public String longestPalindrome(String s) {
-        int maxLen = 0;
-        int stringLength = s.length();
-        boolean dp[] = new boolean[stringLength * stringLength];
-        String longestPalindrome = null;
-        for (int len = 1; len <= stringLength; len++) {
-            for (int i = 0; i < stringLength; i++) {
-                int j = i + len - 1;
-                if (j >= stringLength) {
+        String[][] dp = new String[s.length()][s.length()];
+        for (int i = s.length() - 1; i >= 0; i--) {
+            for (int j = 0; j < s.length(); j++) {
+                if (i == j) {
+                    dp[i][j] = "" + s.charAt(i);
+                } else if (i > j) {
                     continue;
-                }
-                
-                int index = i * stringLength + j;
-                boolean check = false;
-                
-                if (len == 1) {
-                    check = true;
-                } else if (len == 2) {
-                    check = (s.charAt(i) == s.charAt(j));
                 } else {
-                    int lastIndex = (i + 1) * stringLength + (j - 1);
-                    check = (s.charAt(i) == s.charAt(j) && dp[lastIndex]);
-                }
-                
-                dp[index] = check;
-                
-                if (check && len > maxLen) {
-                    maxLen = len;
-                    longestPalindrome = s.substring(i, j + 1);
+                    boolean check = checkPalindrome(s, i, j);
+                    if (check) {
+                        dp[i][j] = s.substring(i, j + 1);
+                    } else {
+                        String ans1 = dp[i + 1][j];
+                        String ans2 = dp[i][j - 1];
+                        dp[i][j] = ans1.length() >= ans2.length() ? ans1 : ans2;
+                    }
                 }
             }
         }
-        return longestPalindrome;
+        return dp[0][s.length() - 1];
+    }
+
+    private boolean checkPalindrome(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start) != s.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
     }
 }
 
 //Memoization
-public String longestPalindrome(String s) {
-    HashMap<Integer, Boolean> dp = new HashMap<>();
-    int maxLen = 0;
-    int stringLength = s.length();
-    String longestPalindrome = null;
-    for (int len = 1; len <= stringLength; len++) {
-        for (int i = 0; i < stringLength; i++) {
-            int j = i + len - 1;
-            if (j >= stringLength) {
-                continue;
-            }
-            
-            int index = i * stringLength + j;
-            boolean check = false;
-            
-            if (len == 1) {
-                check = true;
-            } else if (len == 2) {
-                check = (s.charAt(i) == s.charAt(j));
-            } else {
-                int lastIndex = (i + 1) * stringLength + (j - 1);
-                check = (s.charAt(i) == s.charAt(j) && dp.get(lastIndex));
-            }
-            
-            dp.put(index, check);
-            
-            if (check && len > maxLen) {
-                maxLen = len;
-                longestPalindrome = s.substring(i, j + 1);
-            }
-        }
+class Solution {
+
+    public String longestPalindrome(String s) {
+        String[][] dp = new String[s.length()][s.length()];
+        return longestPalindromeUtil(s, 0, s.length() - 1, dp);
     }
-    return longestPalindrome;
+
+    private String longestPalindromeUtil(String s, int start, int end, String[][] dp) {
+        if (start > end || end < 0 || start >= s.length()) {
+            return null;
+        }
+        if (dp[start][end] != null) {
+            return dp[start][end];
+        }
+        boolean check = checkPalindrome(s, start, end);
+        String ans = null;
+        if (check) {
+            ans = s.substring(start, end + 1);
+            dp[start][end] = ans;
+            return ans;
+        }
+        String ans1 = longestPalindromeUtil(s, start + 1, end, dp);
+        String ans2 = longestPalindromeUtil(s, start, end - 1, dp);
+        ans = ans1.length() >= ans2.length() ? ans1 : ans2;
+
+        dp[start][end] = ans;
+        return ans;
+    }
+
+    private boolean checkPalindrome(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start) != s.charAt(end)) {
+                return false;
+            }
+            start++;
+            end--;
+        }
+        return true;
+    }
 }
 
 /*
-For each character, move outwards and check if palindrome condition is being satisfied
+For each character, move outwards (in both direction) and check if palindrome condition is being satisfied
+Note: Check for odd case, and even case
 TC = O(N) * O(N/2) = O(N^2)
 */
 class Solution {
     public String longestPalindrome(String s) {
         int maxLen = 0;
-        String result = null;
+        String maxPalindrome = null;
         for (int i = 0; i < s.length(); i++) {
-            String palSubstring = palCheck(i, s, true);
-            if (palSubstring.length() > maxLen) {
-                result = palSubstring;
-                maxLen = palSubstring.length();
-            }
-            
-            if (i == s.length() - 1) {
-                continue;
-            }
-            
-            palSubstring = palCheck(i, s, false);
-            if (palSubstring.length() > maxLen) {
-                result = palSubstring;
-                maxLen = palSubstring.length();
+            for (int k = 0; k < 2; k++) { //k = 0 -> odd case, k = 1 -> even case
+                int start = i;
+                int end = i + k;
+                if (end == s.length() || s.charAt(start) != s.charAt(end)) {
+                    continue;
+                }
+                int[] palRange = getPalindromeRange(start, end, s);
+                int len = palRange[1] - palRange[0] + 1;
+                if (len > maxLen) {
+                    maxLen = len;
+                    maxPalindrome = s.substring(palRange[0], palRange[1] + 1);
+                }
             }
         }
-        return result;
+        return maxPalindrome;
     }
-    
-    private String palCheck(int i, String s, boolean oddCase) {
-        int start = i;
-        int end = oddCase ? i : i + 1;
-        
-        while (start >= 0 && end < s.length()) {
-            if (s.charAt(start) != s.charAt(end)) {
-                break;
-            }
-            start--;
-            end++;
+
+    private int[] getPalindromeRange(int i, int j, String s) {
+        while(i >= 0 && j < s.length() && s.charAt(i) == s.charAt(j)) {
+            i--;
+            j++;
         }
-        return s.substring(start + 1, end);
+        return new int[]{i + 1, j - 1};
     }
 }
 
